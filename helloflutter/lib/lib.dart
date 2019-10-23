@@ -25,19 +25,36 @@ class MyHomePage extends StatefulWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:
-          labels.map((element) => Text(element)).toList()
+          children: [
+                
+                Column(children: labels.map((element) => Text(element)).toList())
+          ])
           ,
-      ),
       ),
     );
   }  
-  @override
-  void setState(fn) {
+
+
+  
+  void update(List<String> labels) {
     labels.add("Testing");
-    super.setState(fn);
   }
  } 
+
+class _MyButton extends StatelessWidget {
+   List<String> labels = ['Testing', 'Lars'];
+  _MyButton({StatefulWidget this.widget, List<String> this.labels});
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton (onPressed: () {
+                  widget.setState(() {
+                    update(labels);
+                  });
+                  
+                }, child: Text('Add element')),;
+  }    
+  }
   
 Future<void> _ackAlert(BuildContext context) {
   return showDialog<void>(
