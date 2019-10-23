@@ -1,61 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:helloflutter/drawer.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
   final String title;
-
-
+  MyHomePage(this.title);
 
   @override
   State<StatefulWidget> createState() {
     return _MyHomePageState();
   }
- 
 }
 
- class _MyHomePageState extends State<MyHomePage> {
-  List<String> labels = ['Testing', 'Lars'];
+class _MyHomePageState extends State<MyHomePage> {
+  List<String> _labels = ['Android', 'Flutter'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("title"),
+        title: Text(widget.title),
       ),
+      drawer: MyDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-                
-                Column(children: labels.map((element) => Text(element)).toList())
-          ])
-          ,
+          children: <Widget>[
+            Image.asset('icons/index_logo.png'),
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Column(children: _labels.map((element) => RaisedButton(
+                child: Text(element), 
+                onPressed: () {_ackAlert(context);},
+              )).toList())
+            ])
+          ],
+        ),
       ),
     );
-  }  
-
-
-  
-  void update(List<String> labels) {
-    labels.add("Testing");
   }
- } 
+}
 
-class _MyButton extends StatelessWidget {
-   List<String> labels = ['Testing', 'Lars'];
-  _MyButton({StatefulWidget this.widget, List<String> this.labels});
-
-  @override
-  Widget build(BuildContext context) {
-    return RaisedButton (onPressed: () {
-                  widget.setState(() {
-                    update(labels);
-                  });
-                  
-                }, child: Text('Add element')),;
-  }    
-  }
-  
 Future<void> _ackAlert(BuildContext context) {
   return showDialog<void>(
     context: context,
