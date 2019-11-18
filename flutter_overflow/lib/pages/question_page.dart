@@ -74,7 +74,7 @@ class _QuestionPageState extends State<QuestionPage> {
 class _QuestionCard extends StatelessWidget {
   final Question _question;
 
-  const _QuestionCard(this._question, {Key key}) : super(key: key);
+  _QuestionCard(this._question, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

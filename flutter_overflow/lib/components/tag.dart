@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Tag extends StatelessWidget {
   final String _text;
 
-  const Tag(this._text, {Key key}) : super(key: key);
+  Tag(this._text, {Key key}) : super(key: key);
 
   static List<Widget> fromTags(List<String> tags) {
     return tags.map((String tag) {

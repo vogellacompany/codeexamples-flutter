@@ -17,7 +17,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   Future<List<Question>> _questions;
-  TextEditingController _tagsTextEditingController = TextEditingController();
+  final TextEditingController _tagsTextEditingController = TextEditingController();
   List<String> _tags = [];
 
   void _showTagsDialog(BuildContext context) {
