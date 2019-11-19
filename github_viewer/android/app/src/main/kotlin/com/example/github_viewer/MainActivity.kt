@@ -1,4 +1,4 @@
-package com.example.github_viewer
+package com.vogella.github_viewer
 
 import android.os.Bundle
 
