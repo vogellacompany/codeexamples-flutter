@@ -6,6 +6,17 @@ part of 'models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+User _$UserFromJson(Map<String, dynamic> json) {
+  return User(json['reputation'] as int, json['user_id'] as int,
+      json['display_name'] as String);
+}
+
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'reputation': instance.reputation,
+      'user_id': instance.userId,
+      'display_name': instance.displayName
+    };
+
 Question _$QuestionFromJson(Map<String, dynamic> json) {
   return Question(
       (json['tags'] as List)?.map((e) => e as String)?.toList(),
@@ -16,12 +27,12 @@ Question _$QuestionFromJson(Map<String, dynamic> json) {
       json['question_id'] as int,
       json['creation_date'] == null
           ? null
-          : creationDateFromJson(json['creation_date'] as int))
-    ..isAnswered = json['is_answered'] as bool
-    ..score = json['score'] as int
-    ..bodyMarkdown = json['body_markdown'] == null
-        ? null
-        : unescapeHtml(json['body_markdown'] as String);
+          : creationDateFromJson(json['creation_date'] as int),
+      json['is_answered'] as bool,
+      json['score'] as int,
+      json['body_markdown'] == null
+          ? null
+          : unescapeHtml(json['body_markdown'] as String));
 }
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
@@ -69,15 +80,4 @@ Map<String, dynamic> _$APIErrorToJson(APIError instance) => <String, dynamic>{
       'error_id': instance.statusCode,
       'error_message': instance.errorMessage,
       'error_name': instance.errorName
-    };
-
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User(json['reputation'] as int, json['user_id'] as int,
-      json['display_name'] as String);
-}
-
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'reputation': instance.reputation,
-      'user_id': instance.userId,
-      'display_name': instance.displayName
     };

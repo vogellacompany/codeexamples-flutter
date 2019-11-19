@@ -39,12 +39,13 @@ class _QuestionPageState extends State<QuestionPage> {
                 return ErrorScreen(snapshot.error);
               }
               var answers = snapshot.data;
+              // The accepted answer should be on top, after that it should be sorted by score (desc)
               answers.sort((answer1, answer2) {
                 return answer1.isAccepted ? -1 : answer2.score - answer1.score;
               });
               return ListView(
                 children: <Widget>[
-                  _QuestionCard(this.widget._question),
+                  _QuestionPart(this.widget._question),
                   if (answers.isEmpty)
                     Center(child: Text('There are no answers yet')),
                   // NOTE: This feature is only available in Dart 2.3; SDK version is required 2.2.2
@@ -61,7 +62,7 @@ class _QuestionPageState extends State<QuestionPage> {
                       Colors.orangeAccent,
                     ),
                   ),
-                  _QuestionCard(this.widget._question),
+                  _QuestionPart(this.widget._question),
                 ],
               );
           }
@@ -71,10 +72,10 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 }
 
-class _QuestionCard extends StatelessWidget {
+class _QuestionPart extends StatelessWidget {
   final Question _question;
 
-  _QuestionCard(this._question, {Key key}) : super(key: key);
+  _QuestionPart(this._question, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,16 +102,11 @@ class _QuestionCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      '${_question.title}',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Wrap(
-                      children: Tag.fromTags(_question.tags),
-                    ),
+                    Text('${_question.title}', style: TextStyle(fontSize: 20)),
+                    Wrap(children: Tag.fromTags(_question.tags)),
                     Text(
                       'Opened ${formatDate(_question.creationDate)} by ${_question.owner.displayName}',
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -184,10 +180,6 @@ class _AnswerCard extends StatelessWidget {
                     )
                 ],
               ),
-            ),
-            Divider(
-              color: Colors.black,
-              height: 0,
             ),
             Padding(
               padding: EdgeInsets.all(8.0),

@@ -38,6 +38,9 @@ class Question {
     this.title,
     this.questionId,
     this.creationDate,
+    this.isAnswered,
+    this.score,
+    this.bodyMarkdown
   );
 
   factory Question.fromJson(Map<String, dynamic> json) =>
