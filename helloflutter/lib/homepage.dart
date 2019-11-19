@@ -26,10 +26,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Image.asset('icons/index_logo.png'),
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Column(children: _labels.map((element) => RaisedButton(
-                child: Text(element), 
-                onPressed: () {_ackAlert(context);},
-              )).toList())
+              Column(
+                  children: _labels
+                      .map((element) => RaisedButton(
+                            child: Text(element),
+                            onPressed: () {
+                              _ackAlert(context);
+                            },
+                          ))
+                      .toList())
             ])
           ],
         ),

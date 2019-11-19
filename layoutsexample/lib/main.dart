@@ -10,12 +10,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter layouting',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: Scaffold(
         appBar: AppBar(
           title: Text('vogella employee'),
         ),
+
         body: ListView(children: <Widget>[
           new EmployeeWidget(
             name: 'Lars Vogel',
@@ -47,14 +48,14 @@ class EmployeeWidget extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Image.network(
             '$url',
-            height: 200,
+            height: 100,
           ),
         ),
         TitleSection(name),
         Container(
           padding: const EdgeInsets.all(16),
           child: Text(
-            'For the customers of the vogella GmbH he delivers development, consulting, coaching and training in the areas of Eclipse, Android and Git. These customers include Fortune 100 corporations as well as individual developers.',
+            'For the customers of the vogella GmbH....',
             softWrap: true,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -126,13 +127,13 @@ class TitleSection extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(bottom: 8, top: 16),
                 child: Text(
-                  'Haindaalwisch 17a',
+                  'Adresse 1',
                 ),
               ),
               Text(
                 'Hamburg, Germany',
                 style: TextStyle(
-                  color: Colors.grey[500],
+                  color: Colors.red[500],
                 ),
               ),
             ],
