@@ -53,7 +53,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton(
           itemBuilder: (BuildContext context) {
             return [
-              new PopupMenuItem(
+               PopupMenuItem(
                 child: Text('Hello'),
               )
             ];

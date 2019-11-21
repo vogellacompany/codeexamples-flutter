@@ -65,10 +65,10 @@ class LinearSales {
  /// Create one series with sample hard coded data.
  List<charts.Series<LinearSales, int>> _createSampleData(int value) {
     final data = [
-      new LinearSales(0, value),
-      new LinearSales(1, 15),
-      new LinearSales(2, 8),
-      new LinearSales(3, 5),
+       LinearSales(0, value),
+       LinearSales(1, 15),
+       LinearSales(2, 8),
+       LinearSales(3, 5),
     ];
 
     return [

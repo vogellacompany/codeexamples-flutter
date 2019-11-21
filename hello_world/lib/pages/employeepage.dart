@@ -51,6 +51,7 @@ class EmployeeWidget extends StatelessWidget {
             softWrap: true,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
+          
         ),
         ButtonBarWidget(),
       ],
