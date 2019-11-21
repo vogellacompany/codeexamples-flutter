@@ -6,8 +6,9 @@ import 'package:flutter_overflow/components/tag.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/pages/question_page.dart';
 import 'package:flutter_overflow/service/persistence_service.dart';
-import 'package:flutter_overflow/service/question_service.dart';
+import 'package:flutter_overflow/service/provider_service.dart';
 import 'package:flutter_overflow/util.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({Key key}) : super(key: key);
@@ -17,6 +18,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  StackOverflowService service;
   Future<List<Question>> _questions;
   final TextEditingController _tagsTextEditingController = TextEditingController();
   List<String> _tags = [];
@@ -42,9 +44,7 @@ class _HomepageState extends State<Homepage> {
               onPressed: () {
                 setState(() {
                   _tags = _tagsTextEditingController.text.split(', ');
-                  _questions = QuestionService.fetchLatestQuestions(
-                    tags: _tags,
-                  );
+                  _questions = service.updateQuestions();
                 });
                 Navigator.pop(context);
               },
@@ -55,15 +55,9 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  @override
-  void initState() {
-    _questions = QuestionService.fetchLatestQuestions(tags: _tags);
-    super.initState();
-  }
-
   List<Widget> _buildQuestionTiles(List<Question> questions) {
     // TODO just for testing persist data and read it again
-    FilePersistance.saveQuestions(questions);
+     FilePersistance.saveQuestions(questions);
     FilePersistance.loadQuestion().then((t) => print(t));
 
     return questions.map((Question question) {
@@ -73,6 +67,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    service = Provider.of<StackOverflowService>(context);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -84,7 +79,7 @@ class _HomepageState extends State<Homepage> {
         title: Text('StackOverflow'),
       ),
       body: FutureBuilder(
-        future: _questions,
+        future: service.getQuestions(),
         builder:
             (BuildContext context, AsyncSnapshot<List<Question>> snapshot) {
           switch (snapshot.connectionState) {
@@ -113,8 +108,7 @@ class _HomepageState extends State<Homepage> {
                 ),
                 onRefresh: () async {
                   setState(() {
-                    _questions =
-                        QuestionService.fetchLatestQuestions(tags: _tags);
+                    _questions = service.updateQuestions();
                   });
                 },
               );
