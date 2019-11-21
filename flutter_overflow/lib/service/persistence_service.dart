@@ -13,7 +13,7 @@ class FilePersistance {
     File file = File(directory.path + "/changes.txt");
     // just for testing
     print(directory);
-    if (questions.length > 0) {
+    if (questions.isNotEmpty) {
       file.writeAsString(Question.toJson(questions[0]).toString());
     }
   }
