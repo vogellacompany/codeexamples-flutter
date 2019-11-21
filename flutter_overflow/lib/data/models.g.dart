@@ -37,10 +37,12 @@ Question _$QuestionFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'tags': instance.tags,
-      'owner': instance.owner,
+      'owner': instance.owner?.toJson(),
       'title': instance.title,
       'question_id': instance.questionId,
-      'creation_date': instance.creationDate?.toIso8601String(),
+      'creation_date': instance.creationDate == null
+          ? null
+          : creationDateToJson(instance.creationDate),
       'is_answered': instance.isAnswered,
       'score': instance.score,
       'body_markdown': instance.bodyMarkdown
@@ -63,7 +65,7 @@ Answer _$AnswerFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$AnswerToJson(Answer instance) => <String, dynamic>{
-      'owner': instance.owner,
+      'owner': instance.owner?.toJson(),
       'is_accepted': instance.isAccepted,
       'score': instance.score,
       'creation_date': instance.creationDate?.toIso8601String(),

@@ -6,6 +6,10 @@ DateTime creationDateFromJson(int date) {
   return DateTime.fromMillisecondsSinceEpoch(date * 1000);
 }
 
+int creationDateToJson(DateTime time) {
+  return time.millisecondsSinceEpoch;
+}
+
 final HtmlUnescape htmlUnescape = HtmlUnescape();
 
 /// Unescapes HTML in a string

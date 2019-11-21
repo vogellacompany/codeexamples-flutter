@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class User {
   int reputation;
   @JsonKey(name: 'user_id')
@@ -14,9 +14,13 @@ class User {
   User(this.reputation, this.userId, this.displayName);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() {
+    return _$UserToJson(this);
+  }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Question {
   List<String> tags;
   User owner;
@@ -24,7 +28,7 @@ class Question {
   String title;
   @JsonKey(name: 'question_id')
   int questionId;
-  @JsonKey(name: 'creation_date', fromJson: creationDateFromJson)
+  @JsonKey(name: 'creation_date', fromJson: creationDateFromJson, toJson: creationDateToJson)
   DateTime creationDate;
   @JsonKey(name: 'is_answered')
   bool isAnswered;
@@ -46,12 +50,12 @@ class Question {
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);
 
-  static Map<String, dynamic> toJson(Question question) {
-    return _$QuestionToJson(question);
+  Map<String, dynamic> toJson() {
+    return _$QuestionToJson(this);
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Answer {
   User owner;
   @JsonKey(name: 'is_accepted')
@@ -74,6 +78,10 @@ class Answer {
   );
 
   factory Answer.fromJson(Map<String, dynamic> json) => _$AnswerFromJson(json);
+
+  Map<String, dynamic> toJson() {
+    return _$AnswerToJson(this);
+  }
 }
 
 @JsonSerializable()

@@ -12,20 +12,17 @@ class FilePersistance {
     final directory = await getApplicationDocumentsDirectory();
     File file = File(directory.path + "/changes.txt");
     // just for testing
-    print(directory);
     if (questions.isNotEmpty) {
-      file.writeAsString(Question.toJson(questions[0]).toString());
+      
+      await file.writeAsString(jsonEncode(questions));
     }
   }
 
-  static Future<Question> loadQuestion() async {
-    //TODO throughs an exception if not commented out
-    // final directory = await getApplicationDocumentsDirectory();
-    // File file = File(directory.path + "/changes.txt");
-    // String json = await file.readAsString();
-    // Question question = Question.fromJson(jsonDecode(json));
-    // print(question);
-    //return question;
-    return Future.delayed(Duration(seconds: 1));
+  static Future<List<Question>> loadQuestion() async {
+    final directory = await getApplicationDocumentsDirectory();
+    File file = File(directory.path + "/changes.txt");
+    String json = await file.readAsString();
+    var questions = jsonDecode(json);
+    return questions.map<Question>((question) => Question.fromJson(question)).toList();
   }
 }
