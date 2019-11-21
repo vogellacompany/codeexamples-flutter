@@ -45,6 +45,10 @@ class Question {
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);
+
+  static Map<String, dynamic> toJson(Question question) {
+    return _$QuestionToJson(question);
+  }
 }
 
 @JsonSerializable()

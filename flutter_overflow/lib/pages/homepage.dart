@@ -5,6 +5,7 @@ import 'package:flutter_overflow/components/error_screen.dart';
 import 'package:flutter_overflow/components/tag.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/pages/question_page.dart';
+import 'package:flutter_overflow/service/persistence_service.dart';
 import 'package:flutter_overflow/service/question_service.dart';
 import 'package:flutter_overflow/util.dart';
 
@@ -61,6 +62,10 @@ class _HomepageState extends State<Homepage> {
   }
 
   List<Widget> _buildQuestionTiles(List<Question> questions) {
+    // TODO just for testing persist data and read it again
+    FilePersistance.saveQuestions(questions);
+    FilePersistance.loadQuestion().then((t) => print(t));
+
     return questions.map((Question question) {
       return _QuestionTile(question);
     }).toList();
