@@ -3,6 +3,7 @@ import 'package:hello_world/pages/homepage.dart';
 import 'package:hello_world/pages/employeepage.dart';
 import 'package:hello_world/pages/chartpage.dart';
 import 'package:hello_world/pages/keyspage.dart';
+import 'package:hello_world/pages/toogle.dart';
 import 'package:hello_world/pages/updatelisteview.dart';
 import 'package:hello_world/pages/userinputpage.dart';
 
@@ -51,7 +52,7 @@ class MyDrawer extends StatelessWidget {
               );
             },
           ),
-           ListTile(
+          ListTile(
             title: Text('Color switch'),
             onTap: () {
               Navigator.push(
@@ -75,6 +76,15 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ListPage()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text('Toogle widgets'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SampleApp()),
               );
             },
           ),

@@ -8,6 +8,9 @@ class ListPage extends StatelessWidget {
     return Scaffold(
       appBar: MyAppBar(),
       body: ListContent(),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _,
+      // ),
     );
   }
 }
@@ -19,22 +22,35 @@ class ListContent extends StatefulWidget {
 
 class _ListContentState extends State<ListContent> {
   List<String> _list = ["Hello", "Testing"];
+  List<Widget> _widgets ;
   @override
   Widget build(BuildContext context) {
-    return Column(
+    _widgets = getList( _list);
+    return Row(
       children: <Widget>[
-        ListView(
-          children: _list.map((f) => Text(f)).toList(),
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: _widgets
+          ),
         ),
         RaisedButton(
+          child: Text("Update"),
           onPressed: _swapList,
-          child: Text("Swap"),
         )
       ],
     );
   }
 
   void _swapList() {
-    _list = ["Stuff", "More Stuff"];
+    setState(() {
+      _widgets = getList(["Andoid", "Flutter"]);
+    });
+  }
+
+static List<Widget> getList(List<String> list) {
+    return list.map((f) => Text(f)).toList();
   }
 }
