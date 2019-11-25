@@ -41,18 +41,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      flexibleSpace: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              children: [Placeholder()],
-            ),
-            Row(
-              children: <Widget>[Placeholder()],
-            )
-          ],
-        ),
-      ),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.home),
