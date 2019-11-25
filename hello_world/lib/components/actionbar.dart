@@ -41,6 +41,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      flexibleSpace: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              children: [Placeholder()],
+            ),
+            Row(
+              children: <Widget>[Placeholder()],
+            )
+          ],
+        ),
+      ),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.home),
@@ -53,7 +65,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton(
           itemBuilder: (BuildContext context) {
             return [
-               PopupMenuItem(
+              PopupMenuItem(
                 child: Text('Hello'),
               )
             ];
@@ -70,4 +82,3 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(40);
 }
-

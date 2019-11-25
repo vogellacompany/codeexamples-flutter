@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:hello_world/components/applicationbars.dart';
+import 'package:hello_world/components/actionbar.dart';
 import 'package:hello_world/components/drawer.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserValidation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return   Scaffold(
+    return Scaffold(
       appBar: MyAppBar(),
       body: MyInputValidation(),
     );
@@ -49,9 +52,15 @@ class _MyInputValidationState extends State<MyInputValidation> {
             RaisedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserPhotoSelection()),
+                  );
                   // If the form is valid, display a Snackbar.
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                  // Scaffold.of(context)
+                  //     .showSnackBar(SnackBar(content: Text('Processing Data')));
+
                 } else {}
               },
               child: Text('Submit'),
@@ -60,5 +69,73 @@ class _MyInputValidationState extends State<MyInputValidation> {
         ),
       ),
     );
+  }
+}
+
+class UserPhotoSelection extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _UserPhotoSelection();
+}
+
+class _UserPhotoSelection extends State<StatefulWidget> {
+  File _image;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          color: Colors.blue,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+                child: _image== null? Icon(Icons.add_a_photo): Image.file(_image),
+            ),
+            ),
+          ),
+        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                          leading: Icon(Icons.camera),
+                          title: Text('Camera'),
+                          onTap: () {
+                            getImage(ImageSource.camera);
+                            // this is how you dismiss the modal bottom sheet after making a choice
+                            Navigator.pop(context);
+                          }),
+                      ListTile(
+                          leading: Icon(Icons.image),
+                          title: Text('Gallery'),
+                          onTap: () {
+                            getImage(ImageSource.gallery);
+                            // this is how you dismiss the modal bottom sheet after making a choice
+                            Navigator.pop(context);
+                          }),
+                    ],
+                  ),
+                );
+              });
+        },
+        tooltip: 'Pick profile image',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Future getImage(ImageSource source) async {
+    var image = await ImagePicker.pickImage(source: source);
+
+    if (image != null) {
+      setState(() {
+        _image = image;
+      });
+    }
   }
 }

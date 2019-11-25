@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/components/applicationbars.dart';
+import 'package:hello_world/components/actionbar.dart';
 import 'package:hello_world/components/drawer.dart';
-
 
 class ListOfEmployees extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: MyAppBar(),
       drawer: MyDrawer(),
-
-      body: ListView(children: <Widget>[
+      body: ListView(
+        children: <Widget>[
           EmployeeWidget(
             name: 'Lars Vogel',
             url: 'https://www.vogella.com/img/people/larsvogel.png',
@@ -21,11 +19,11 @@ class ListOfEmployees extends StatelessWidget {
             url: 'https://www.vogella.com/img/people/jonashungershausen.png',
           ),
         ],
-        ),
-
+      ),
     );
   }
 }
+
 class EmployeeWidget extends StatelessWidget {
   final String name;
   final String url;
@@ -35,14 +33,41 @@ class EmployeeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
           padding: const EdgeInsets.all(16),
-          child: Image.network(
-            '$url',
-            height: 200,
+          child: Stack(
+            children: [
+              SizedBox(
+                width: 200,
+                height: 200,
+                child: CircleAvatar(
+                  radius: 30.0,
+                  backgroundImage: NetworkImage('$url'),
+                  child: Text('$name'),
+                ),
+              ),
+              Container(
+                child: Center(
+                  
+                  child: Text('$name',
+                   style: TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red
+                  ),),
+                ),
+              ),
+            ],
           ),
         ),
+        Icon(
+  Icons.star,
+  color: Colors.red[500],
+),
         TitleSection(name),
         Container(
           padding: const EdgeInsets.all(16),
@@ -51,7 +76,6 @@ class EmployeeWidget extends StatelessWidget {
             softWrap: true,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          
         ),
         ButtonBarWidget(),
       ],

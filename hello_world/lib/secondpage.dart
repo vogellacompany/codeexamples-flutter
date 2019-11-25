@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/components/applicationbars.dart';
+import 'package:hello_world/components/actionbar.dart';
 import 'package:hello_world/components/drawer.dart';
 
 class SecondScreen extends StatelessWidget {
@@ -10,7 +10,7 @@ class SecondScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),
-      body: new SecondPageContent(),
+      body:  SecondPageContent(),
       drawer: MyDrawer(),
     );
   }

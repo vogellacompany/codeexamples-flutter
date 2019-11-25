@@ -4,13 +4,15 @@ import 'package:hello_world/pages/homepage.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
-      title: 'Welcome to Flutter',
-      home: MyHomePage("Testing"),
+      routes: {
+			'/': (context) => MyHomePage("Testing"),
+			// etc.
+		},
+		initialRoute: '/', // <1>
+    title: 'Welcome to Flutter',
     );
   }
 }

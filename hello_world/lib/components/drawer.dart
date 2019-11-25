@@ -6,6 +6,7 @@ import 'package:hello_world/pages/keyspage.dart';
 import 'package:hello_world/pages/toogle.dart';
 import 'package:hello_world/pages/updatelisteview.dart';
 import 'package:hello_world/pages/userinputpage.dart';
+import 'package:hello_world/pages/gesturedetector.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -85,6 +86,15 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SampleApp()),
+              );
+            },
+          ),
+           ListTile(
+            title: Text('Gesture Detector'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyGesturePage()),
               );
             },
           ),
