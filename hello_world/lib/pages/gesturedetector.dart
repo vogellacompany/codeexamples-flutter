@@ -10,7 +10,6 @@ class MyGesturePage extends StatelessWidget {
     );
   }
 }
-
 class MyGestureExample extends StatefulWidget {
   @override
   _MyGestureExampleState createState() => _MyGestureExampleState();
@@ -22,14 +21,16 @@ class _MyGestureExampleState extends State<MyGestureExample> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _changeColor(),
+      onTap: () {
+        _changeColor();
+      },
       child: Container(
-        height: 36.0,
+        height: 200.0,
         padding: const EdgeInsets.all(8.0),
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
-          color: _tabbed ? Colors.lightGreen[500]: Colors.red[500],
+          color: _tabbed ? Colors.lightGreen[500] : Colors.red[500],
         ),
         child: Center(
           child: _tabbed ? Text('Engage') : Text('Not engaged'),
