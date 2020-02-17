@@ -34,11 +34,13 @@ class _SampleAppPageState extends State<SampleAppPage> {
     });
   }
 
-  _getToggleChild() {
+  Widget _getToggleChild() {
     if (toggle) {
       return CircularProgressIndicator();
     } else {
-      return MaterialButton(onPressed: () {}, child: Text('Download finished after button press'));
+      return MaterialButton(
+          onPressed: () {},
+          child: Text('Download finished after button press'));
     }
   }
 

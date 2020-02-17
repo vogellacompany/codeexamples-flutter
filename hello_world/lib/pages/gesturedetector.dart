@@ -17,7 +17,10 @@ class MyGestureExample extends StatefulWidget {
 
 class _MyGestureExampleState extends State<MyGestureExample> {
   bool _tabbed = false;
-
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

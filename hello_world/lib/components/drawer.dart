@@ -8,6 +8,23 @@ import 'package:hello_world/pages/updatelisteview.dart';
 import 'package:hello_world/pages/userinputpage.dart';
 import 'package:hello_world/pages/gesturedetector.dart';
 
+class Owner {
+  int reputation;
+  int userId;
+  String userType;
+  String profileImage;
+  String displayName;
+  String link;
+  Owner({
+    this.reputation,
+    this.userId,
+    this.userType,
+    this.profileImage,
+    this.displayName,
+    this.link,
+  });
+}
+
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +37,10 @@ class MyDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header'),
+            child: SizedBox(
+              child: Text('Drawer Header'),
+              height: 100,
+            ),
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -89,7 +109,7 @@ class MyDrawer extends StatelessWidget {
               );
             },
           ),
-           ListTile(
+          ListTile(
             title: Text('Gesture Detector'),
             onTap: () {
               Navigator.push(

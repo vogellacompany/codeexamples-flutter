@@ -19,55 +19,18 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   StackOverflowService service;
-  Future<List<Question>> _questions;
   final TextEditingController _tagsTextEditingController = TextEditingController();
   List<String> _tags = [];
 
-  void _showTagsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Tags'),
-          content: TextField(
-            controller: _tagsTextEditingController,
-            decoration: InputDecoration(hintText: 'Tags...'),
-          ),
-          actions: <Widget>[
-            SimpleDialogOption(
-              child: Text('Cancel'),
-              onPressed: () => Navigator.pop(context),
-            ),
-            RaisedButton(
-              child: Text('Search'),
-              textColor: Colors.white,
-              onPressed: () {
-                setState(() {
-                  _tags = _tagsTextEditingController.text.split(', ');
-                  _questions = service.updateQuestions();
-                });
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  List<Widget> _buildQuestionTiles(List<Question> questions) {
-    // TODO just for testing persist data and read it again
-     FilePersistance.saveQuestions(questions);
-    FilePersistance.loadQuestion().then((t) => print(t));
-
-    return questions.map((Question question) {
-      return _QuestionTile(question);
-    }).toList();
+@override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     service = Provider.of<StackOverflowService>(context);
+    
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -108,7 +71,7 @@ class _HomepageState extends State<Homepage> {
                 ),
                 onRefresh: () async {
                   setState(() {
-                    _questions = service.updateQuestions();
+                    service.getQuestions();
                   });
                 },
               );
@@ -120,6 +83,49 @@ class _HomepageState extends State<Homepage> {
         },
       ),
     );
+  }
+
+
+  void _showTagsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Tags'),
+          content: TextField(
+            controller: _tagsTextEditingController,
+            decoration: InputDecoration(hintText: 'Tags...'),
+          ),
+          actions: <Widget>[
+            SimpleDialogOption(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            RaisedButton(
+              child: Text('Search'),
+              textColor: Colors.white,
+              onPressed: () {
+                setState(() {
+                  _tags = _tagsTextEditingController.text.split(', ');
+                  service.getQuestions();
+                });
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  List<Widget> _buildQuestionTiles(List<Question> questions) {
+    // TODO just for testing persist data and read it again
+     FilePersistance.saveQuestions(questions);
+    FilePersistance.loadQuestion().then((t) => print(t));
+
+    return questions.map((Question question) {
+      return _QuestionTile(question);
+    }).toList();
   }
 }
 
