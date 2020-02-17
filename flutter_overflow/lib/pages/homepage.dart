@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_overflow/components/error_screen.dart';
 import 'package:flutter_overflow/components/tag.dart';
@@ -19,10 +17,11 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   StackOverflowService service;
-  final TextEditingController _tagsTextEditingController = TextEditingController();
+  final TextEditingController _tagsTextEditingController =
+      TextEditingController();
   List<String> _tags = [];
 
-@override
+  @override
   void initState() {
     super.initState();
   }
@@ -30,7 +29,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     service = Provider.of<StackOverflowService>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -85,7 +84,6 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-
   void _showTagsDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -106,7 +104,8 @@ class _HomepageState extends State<Homepage> {
               textColor: Colors.white,
               onPressed: () {
                 setState(() {
-                  _tags = _tagsTextEditingController.text.split(', ');
+                  _tags.clear();
+                  _tags.addAll(_tagsTextEditingController.text.split(', '));
                   service.getQuestions();
                 });
                 Navigator.pop(context);
@@ -120,7 +119,7 @@ class _HomepageState extends State<Homepage> {
 
   List<Widget> _buildQuestionTiles(List<Question> questions) {
     // TODO just for testing persist data and read it again
-     FilePersistance.saveQuestions(questions);
+    FilePersistance.saveQuestions(questions);
     FilePersistance.loadQuestion().then((t) => print(t));
 
     return questions.map((Question question) {

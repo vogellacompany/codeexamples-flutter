@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      builder: (context) => StackOverflowService(),
+      create: (context) => StackOverflowService(),
       child: MaterialApp(
         title: 'FlutterOverflow',
         theme: ThemeData(

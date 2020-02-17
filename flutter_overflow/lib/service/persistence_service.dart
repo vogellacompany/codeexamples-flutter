@@ -13,7 +13,6 @@ class FilePersistance {
     File file = File(directory.path + "/changes.txt");
     // just for testing
     if (questions.isNotEmpty) {
-      
       await file.writeAsString(jsonEncode(questions));
     }
   }
@@ -23,6 +22,8 @@ class FilePersistance {
     File file = File(directory.path + "/changes.txt");
     String json = await file.readAsString();
     var questions = jsonDecode(json);
-    return questions.map<Question>((question) => Question.fromJson(question)).toList();
+    return questions
+        .map<Question>((question) => Question.fromJson(question))
+        .toList();
   }
 }

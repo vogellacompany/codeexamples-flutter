@@ -28,7 +28,10 @@ class Question {
   String title;
   @JsonKey(name: 'question_id')
   int questionId;
-  @JsonKey(name: 'creation_date', fromJson: creationDateFromJson, toJson: creationDateToJson)
+  @JsonKey(
+      name: 'creation_date',
+      fromJson: creationDateFromJson,
+      toJson: creationDateToJson)
   DateTime creationDate;
   @JsonKey(name: 'is_answered')
   bool isAnswered;
@@ -36,16 +39,8 @@ class Question {
   @JsonKey(name: 'body_markdown', fromJson: unescapeHtml)
   String bodyMarkdown;
 
-  Question(
-    this.tags,
-    this.owner,
-    this.title,
-    this.questionId,
-    this.creationDate,
-    this.isAnswered,
-    this.score,
-    this.bodyMarkdown
-  );
+  Question(this.tags, this.owner, this.title, this.questionId,
+      this.creationDate, this.isAnswered, this.score, this.bodyMarkdown);
 
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);

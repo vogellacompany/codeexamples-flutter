@@ -12,8 +12,9 @@ class StackOverflowService {
   Future<List<Question>> getQuestions() {
     return _questions;
   }
-   Future<List<Question>> updateQuestions() {
-     _questions = _QuestionService.fetchLatestQuestions();
+
+  Future<List<Question>> updateQuestions() {
+    _questions = _QuestionService.fetchLatestQuestions();
     return _questions;
   }
 }
@@ -41,4 +42,3 @@ class _QuestionService {
     }
   }
 }
-
