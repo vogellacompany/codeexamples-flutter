@@ -2,26 +2,38 @@ import 'package:flutter/material.dart';
 
 class Tag extends StatelessWidget {
   final String _text;
+  final Function(String tag) onDelete;
 
-  Tag(this._text, {Key key}) : super(key: key);
+  bool get deletable => onDelete != null;
 
-  static List<Widget> fromTags(List<String> tags) {
+  Tag(this._text, {this.onDelete, Key key}) : super(key: key);
+
+  static List<Widget> fromTags(List<String> tags,
+      {Function(String tag) onDelete}) {
     return tags.map((String tag) {
-      return Tag(tag);
+      return Tag(
+        tag,
+        onDelete: onDelete,
+      );
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(3.0),
+      padding: EdgeInsets.all(deletable ? 5.0 : 3.0),
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(3.0),
       ),
-      child: Text(
-        _text,
-        style: TextStyle(color: Colors.white),
+      child: GestureDetector(
+        child: Text(
+          _text,
+          style: Theme.of(context).primaryTextTheme.body1
+        ),
+        onTap: () {
+          if (onDelete != null) onDelete(_text);
+        },
       ),
       margin: EdgeInsets.all(1.5),
     );

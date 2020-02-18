@@ -5,6 +5,7 @@ import 'package:flutter_overflow/components/tag.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/service/question_service.dart';
 import 'package:flutter_overflow/util.dart';
+import 'package:provider/provider.dart';
 
 class QuestionPage extends StatefulWidget {
   final Question _question;
@@ -20,54 +21,69 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   void initState() {
-    _answers = QuestionService.fetchAnswers(widget._question.questionId);
     super.initState();
+    _answers = fetchAnswers(widget._question.questionId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget._question.title}'),
-      ),
-      body: FutureBuilder(
-        future: _answers,
-        builder: (BuildContext context, AsyncSnapshot<List<Answer>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return ErrorScreen(snapshot.error);
+    return Consumer<ThemeProvider>(
+      builder: (context, themeService, snapshot) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('${widget._question.title}'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.lightbulb_outline),
+                onPressed: () {
+                  themeService.toggle();
+                },
+              ),
+            ],
+          ),
+          body: FutureBuilder(
+            future: _answers,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Answer>> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    return ErrorScreen(snapshot.error);
+                  }
+                  var answers = snapshot.data;
+                  // The accepted answer should be on top, after that it should be sorted by score (desc)
+                  answers.sort((answer1, answer2) {
+                    return answer1.isAccepted
+                        ? -1
+                        : answer2.score - answer1.score;
+                  });
+                  return ListView(
+                    children: <Widget>[
+                      _QuestionPart(this.widget._question),
+                      if (answers.isEmpty)
+                        Center(child: Text('There are no answers yet')),
+                      // NOTE: This feature is only available in Dart 2.3; SDK version is required 2.2.2
+                      ...answers.map((Answer answer) {
+                        return _AnswerCard(answer);
+                      }),
+                    ],
+                  );
+                default:
+                  return ListView(
+                    children: <Widget>[
+                      LinearProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).accentColor,
+                        ),
+                      ),
+                      _QuestionPart(this.widget._question),
+                    ],
+                  );
               }
-              var answers = snapshot.data;
-              // The accepted answer should be on top, after that it should be sorted by score (desc)
-              answers.sort((answer1, answer2) {
-                return answer1.isAccepted ? -1 : answer2.score - answer1.score;
-              });
-              return ListView(
-                children: <Widget>[
-                  _QuestionPart(this.widget._question),
-                  if (answers.isEmpty)
-                    Center(child: Text('There are no answers yet')),
-                  // NOTE: This feature is only available in Dart 2.3; SDK version is required 2.2.2
-                  ...answers.map((Answer answer) {
-                    return _AnswerCard(answer);
-                  }),
-                ],
-              );
-            default:
-              return ListView(
-                children: <Widget>[
-                  LinearProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.orangeAccent,
-                    ),
-                  ),
-                  _QuestionPart(this.widget._question),
-                ],
-              );
-          }
-        },
-      ),
+            },
+          ),
+        );
+      },
     );
   }
 }
@@ -113,12 +129,12 @@ class _QuestionPart extends StatelessWidget {
             ],
           ),
           Divider(
-            color: Colors.black,
+            color: Theme.of(context).dividerColor,
             height: 10.0,
           ),
           MarkdownBody(data: _question.bodyMarkdown),
           Divider(
-            color: Colors.black,
+            color: Theme.of(context).dividerColor,
             height: 10.0,
           ),
         ],
@@ -130,14 +146,13 @@ class _QuestionPart extends StatelessWidget {
 class _AnswerCard extends StatelessWidget {
   final Answer _answer;
 
-  final Color _headingColor;
-
-  _AnswerCard(this._answer, {Key key})
-      : _headingColor = _answer.isAccepted ? Colors.white : Colors.black,
-        super(key: key);
+  _AnswerCard(this._answer, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Color _headingColor = _answer.isAccepted
+        ? Colors.white
+        : Theme.of(context).textTheme.body1.color;
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Card(
@@ -145,7 +160,9 @@ class _AnswerCard extends StatelessWidget {
           children: <Widget>[
             Container(
               padding: EdgeInsets.all(8.0),
-              color: _answer.isAccepted ? Colors.green[800] : Colors.grey[200],
+              color: _answer.isAccepted
+                  ? Colors.green
+                  : Theme.of(context).backgroundColor,
               child: Row(
                 children: [
                   Flexible(

@@ -7,23 +7,28 @@ import 'package:path_provider/path_provider.dart';
 // dependencies:
 //  path_provider: ^1.4.4
 
-class FilePersistance {
-  static void saveQuestions(List<Question> questions) async {
-    final directory = await getApplicationDocumentsDirectory();
-    File file = File(directory.path + "/changes.txt");
-    // just for testing
-    if (questions.isNotEmpty) {
-      await file.writeAsString(jsonEncode(questions));
-    }
+void saveQuestionsToCache(List<Question> questions) async {
+  final directory = await getApplicationDocumentsDirectory();
+  File file = File(directory.path + "/questions.json");
+  // just for testing
+  if (questions.isNotEmpty) {
+    await file.writeAsString(jsonEncode(questions));
   }
+}
 
-  static Future<List<Question>> loadQuestion() async {
-    final directory = await getApplicationDocumentsDirectory();
-    File file = File(directory.path + "/changes.txt");
-    String json = await file.readAsString();
-    var questions = jsonDecode(json);
-    return questions
-        .map<Question>((question) => Question.fromJson(question))
-        .toList();
+Future<List<Question>> loadQuestionsFromCache() async {
+  final directory = await getApplicationDocumentsDirectory();
+  final file = File(directory.path + "/questions.json");
+  if(!await file.exists()) {
+    throw QuestionsNotFoundException();
   }
+  String json = await file.readAsString();
+  var questions = jsonDecode(json);
+  return questions
+      .map<Question>((question) => Question.fromJson(question))
+      .toList();
+}
+
+class QuestionsNotFoundException extends Error {
+
 }
