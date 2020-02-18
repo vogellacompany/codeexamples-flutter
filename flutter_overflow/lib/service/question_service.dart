@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/service/persistence_service.dart';
 import 'package:http/http.dart' as http;
-
-import '../data/models.dart';
 
 const BASE_URL = 'https://api.stackexchange.com/2.2';
 const SITE = "stackoverflow"; // could be any stackexchange site
