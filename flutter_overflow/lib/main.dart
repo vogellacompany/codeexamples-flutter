@@ -3,9 +3,9 @@ import 'package:flutter_overflow/pages/homepage.dart';
 import 'package:flutter_overflow/service/theme_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(FlutterOverflowApp());
 
-class MyApp extends StatelessWidget {
+class FlutterOverflowApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
