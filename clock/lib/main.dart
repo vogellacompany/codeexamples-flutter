@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:clock/clock_face.dart';
 
 void main() => runApp(new MyApp());
 
@@ -20,13 +19,13 @@ class MyApp extends StatelessWidget {
             ),
           ],
         ),
-        body: Clock(),
+        body: ClockFrame(),
       ),
     );
   }
 }
 
-class Clock extends StatelessWidget {
+class ClockFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,7 +49,7 @@ class Clock extends StatelessWidget {
                     ],
                   ),
                 ),
-                ClockFace(),
+                ClockFrame(),
               ]))
         ],
       ),
