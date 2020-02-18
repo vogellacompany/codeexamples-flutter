@@ -20,22 +20,24 @@ class Tag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    var container = Container(
       padding: EdgeInsets.all(deletable ? 5.0 : 3.0),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(3.0),
       ),
-      child: GestureDetector(
-        child: Text(
-          _text,
-          style: Theme.of(context).primaryTextTheme.body1
-        ),
+      margin: EdgeInsets.all(1.5),
+      child: Text(_text, style: Theme.of(context).primaryTextTheme.body1),
+    );
+    if (deletable) {
+      return GestureDetector(
         onTap: () {
           if (onDelete != null) onDelete(_text);
         },
-      ),
-      margin: EdgeInsets.all(1.5),
-    );
+        child: container,
+      );
+    } else {
+      return container;
+    }
   }
 }

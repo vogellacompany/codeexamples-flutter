@@ -10,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 void saveQuestionsToCache(List<Question> questions) async {
   final directory = await getApplicationDocumentsDirectory();
   File file = File(directory.path + "/questions.json");
-  // just for testing
   if (questions.isNotEmpty) {
     await file.writeAsString(jsonEncode(questions));
   }
@@ -19,7 +18,7 @@ void saveQuestionsToCache(List<Question> questions) async {
 Future<List<Question>> loadQuestionsFromCache() async {
   final directory = await getApplicationDocumentsDirectory();
   final file = File(directory.path + "/questions.json");
-  if(!await file.exists()) {
+  if (!await file.exists()) {
     throw QuestionsNotFoundException();
   }
   String json = await file.readAsString();
@@ -29,6 +28,4 @@ Future<List<Question>> loadQuestionsFromCache() async {
       .toList();
 }
 
-class QuestionsNotFoundException extends Error {
-
-}
+class QuestionsNotFoundException extends Error {}

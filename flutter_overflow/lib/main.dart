@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_overflow/pages/homepage.dart';
+import 'package:flutter_overflow/service/theme_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'service/question_service.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
             theme: themeProvider.themeData,
             home: Homepage(),
           );
-        }
+        },
       ),
     );
   }
