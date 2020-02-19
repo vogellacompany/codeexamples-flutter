@@ -32,70 +32,70 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeService, widget) {
-        return Scaffold(
-          appBar: AppBar(
-            actions: <Widget>[
-              IconButton(
+    return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          Consumer<ThemeProvider>(
+            builder: (context, themeService, widget) {
+              return IconButton(
                 icon: Icon(Icons.lightbulb_outline),
                 onPressed: () {
                   themeService.toggle();
                 },
-              ),
-              FlatButton.icon(
-                label: Text('${_tags.length}'),
-                icon: Icon(Icons.label),
-                onPressed: () => _showTagsDialog(context),
-              )
-            ],
-            title: Text('StackOverflow'),
-          ),
-          body: FutureBuilder(
-            future: _questionsFuture,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Question>> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return ErrorScreen(snapshot.error);
-                  }
-                  if (snapshot.data.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('No questions matched your filter'),
-                          RaisedButton(
-                            child: Text('Adjust tags'),
-                            onPressed: () => _showTagsDialog(context),
-                          )
-                        ],
-                      ),
-                    );
-                  }
-                  return RefreshIndicator(
-                    child: ListView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      children: _buildQuestionTiles(snapshot.data),
-                    ),
-                    onRefresh: () async {
-                      setState(() {
-                        _questionsFuture =
-                            fetchLatestQuestions(tags: _tags, force: true);
-                      });
-                    },
-                  );
-                default:
-                  return LinearProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).accentColor),
-                  );
-              }
+              );
             },
           ),
-        );
-      },
+          FlatButton.icon(
+            label: Text('${_tags.length}'),
+            icon: Icon(Icons.label),
+            onPressed: () => _showTagsDialog(context),
+          )
+        ],
+        title: Text('StackOverflow'),
+      ),
+      body: FutureBuilder(
+        future: _questionsFuture,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Question>> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              if (snapshot.hasError) {
+                return ErrorScreen(snapshot.error);
+              }
+              if (snapshot.data.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('No questions matched your filter'),
+                      RaisedButton(
+                        child: Text('Adjust tags'),
+                        onPressed: () => _showTagsDialog(context),
+                      )
+                    ],
+                  ),
+                );
+              }
+              return RefreshIndicator(
+                child: ListView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  children: _buildQuestionTiles(snapshot.data),
+                ),
+                onRefresh: () async {
+                  setState(() {
+                    _questionsFuture =
+                        fetchLatestQuestions(tags: _tags, force: true);
+                  });
+                },
+              );
+            default:
+              return LinearProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).accentColor),
+              );
+          }
+        },
+      ),
     );
   }
 
