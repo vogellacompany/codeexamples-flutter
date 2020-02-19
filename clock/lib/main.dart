@@ -49,7 +49,7 @@ class ClockFrame extends StatelessWidget {
                     ],
                   ),
                 ),
-                ClockFrame(),
+                ClockFace(),
               ]))
         ],
       ),
