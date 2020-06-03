@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'Data.dart';
-import 'dart:async';
+
+import 'data.dart';
+
 
 class Section extends StatefulWidget{
   final Data input;
@@ -13,10 +16,10 @@ class Section extends StatefulWidget{
 }
 
 class _SectionState extends State<Section> {
-  bool _isOnline = false;
-  int _totalCheck = 0;
-  int _totalOnline = 0;
-  bool _on = false;
+  var _isOnline = false;
+  var _totalCheck = 0;
+  var _totalOnline = 0;
+  var _on = false;
 
   void _online(){
     setState(() {

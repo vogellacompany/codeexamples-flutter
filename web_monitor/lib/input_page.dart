@@ -1,25 +1,17 @@
 import 'package:flutter/material.dart';
-import 'Data.dart';
 
-//textfield with input management
-class UrlForm extends StatefulWidget {
+import 'data.dart';
 
-  final _UrlFormState state = new _UrlFormState();
-  
-  getInput(){
-    return state.d;
-  }
-
+class InputPage extends StatefulWidget{
   @override
-  _UrlFormState createState() => state;
+  _InputPageSate createState() => new _InputPageSate();
 }
 
-
-class _UrlFormState extends State<UrlForm> {
-  final myController = TextEditingController();
-  final myTimeController = TextEditingController();
-  String url = "null";
-  Data d = Data(text: "null", seconds: 0);
+class _InputPageSate extends State<InputPage>{
+  var myController = TextEditingController();
+  var myTimeController = TextEditingController();
+  var url = "null";
+  var d = Data(text: "null", seconds: 0);
 
   @override
   void initState() {
@@ -37,6 +29,7 @@ class _UrlFormState extends State<UrlForm> {
     RegExp regExp = new RegExp(urlPattern, caseSensitive: false, multiLine: false,);
     var result = regExp.hasMatch(myController.text); 
     if(!result){
+      Navigator.pop(context);
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -54,7 +47,7 @@ class _UrlFormState extends State<UrlForm> {
               FlatButton(
                 child: Text('OK'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context, d); 
                 },
               ),
             ],
@@ -65,6 +58,7 @@ class _UrlFormState extends State<UrlForm> {
     else{
       url = myController.text;
       d.text = url;
+      Navigator.pop(context, d); 
     }
 
     int timeInterval = int.parse(myTimeController.text);
@@ -74,15 +68,17 @@ class _UrlFormState extends State<UrlForm> {
   @override
   Widget build(BuildContext context) {
     return 
-     new AlertDialog(
-            contentPadding: const EdgeInsets.all(16.0),
-            content: 
-            Container(
-              height: 100.0,
+     new Scaffold(
+        appBar: AppBar(
+          title: const Text('Type In'),
+          backgroundColor: Colors.blueGrey[900],
+        ),
+        body: Center(
+          child: Container(
+            height: 300,
               child: Column(
               children: <Widget>[
-                  new Expanded(
-                    child: TextField(
+                    TextField(
                           autofocus: true,
                           decoration: new InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -94,9 +90,7 @@ class _UrlFormState extends State<UrlForm> {
                           labelText: 'Enter Valid URL', hintText: 'http://www.vogella.com'),
                           controller: myController,
                     ),
-                  ),
-                  new Expanded(
-                    child: TextField(
+                    TextField(
                           autofocus: true,
                           decoration: new InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -108,22 +102,20 @@ class _UrlFormState extends State<UrlForm> {
                           labelText: 'Enter the Time Interval', hintText: 'e.g. 10'),
                           controller: myTimeController,
                     ),
-                  )
-                ],
-              ),),
-            actions: <Widget>[
-              new FlatButton(
+                new FlatButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, d); 
                   }),
-              new FlatButton(
+                new FlatButton(
                   child: const Text('OK'),
                   onPressed: () {
-                    Navigator.pop(context); // this need to be put first, cannot have two alert at the same time
                     handleUrl();                    
-                  })
-            ],
-     );
+                  }),
+                ],
+              ),
+            ),
+        ),
+      );
   }
 }
