@@ -18,7 +18,6 @@ class _MyMainPageSate extends State<MyMainPage> {
     MaterialPageRoute(builder: (context) => page),
     ) as Data;
 
-    print("here");
     var data = new Data(seconds: dataFromInputPage.seconds, text: dataFromInputPage.text);
 
     if(data.text!="null"){

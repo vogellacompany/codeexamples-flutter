@@ -6,6 +6,7 @@ import 'package:flutter_overflow/components/error_screen.dart';
 import 'package:flutter_overflow/components/tag.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/pages/question_page.dart';
+import 'package:flutter_overflow/pages/stack_log_in.dart';
 import 'package:flutter_overflow/service/theme_provider.dart';
 import 'package:flutter_overflow/util.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +45,17 @@ class _HomepageState extends State<Homepage> {
                 },
               );
             },
+          ),
+          FlatButton.icon(
+            onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            );
+          },
+            icon: Icon(Icons.account_box), 
+            label: Text('${_tags.length}'),
           ),
           FlatButton.icon(
             label: Text('${_tags.length}'),
@@ -98,7 +110,6 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
-
   void _showTagsDialog(BuildContext context) async {
     List<String> newTags = await showDialog(
       context: context,

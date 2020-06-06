@@ -58,11 +58,10 @@ class _InputPageSate extends State<InputPage>{
     else{
       url = myController.text;
       d.text = url;
+      int timeInterval = int.parse(myTimeController.text);
+      d.seconds = timeInterval;
       Navigator.pop(context, d); 
     }
-
-    int timeInterval = int.parse(myTimeController.text);
-    d.seconds = timeInterval;
   }
 
   @override
