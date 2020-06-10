@@ -28,22 +28,22 @@ class GenericStackButton extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTap: onTap,
-      child: new Semantics(
+      child: Semantics(
         button: true,
-        child: new DecoratedBox(
-          decoration: new BoxDecoration(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
             color: const Color(0xFFFFFFFF),
-            borderRadius: new BorderRadius.all(
+            borderRadius: BorderRadius.all(
               const Radius.circular(4.0),
             ),
-            border: new Border.all(width: 1.0, color: const Color(0xFFBBBBBB)),
+            border: Border.all(width: 1.0, color: const Color(0xFFBBBBBB)),
           ),
-          child: new Center(
+          child: Center(
             widthFactor: 1.0,
             heightFactor: 1.0,
-            child: new Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image.asset(
@@ -51,20 +51,20 @@ class GenericStackButton extends StatelessWidget{
                   width: 40.0,
                   height: 40.0,
                 ),
-                new Padding(
-                  padding: new EdgeInsets.only(right: 12.0),
-                  child: new RichText(
-                    text: new TextSpan(
-                      style: new TextStyle(
+                Padding(
+                  padding: EdgeInsets.only(right: 12.0),
+                  child: RichText(
+                    text: TextSpan(
+                      style: TextStyle(
                         fontSize: 14.0,
                         fontFamily: "Lato",
                         color: Colors.black,
                       ),
                       children: <TextSpan>[
-                        new TextSpan(text: 'Sign in with '),
-                        new TextSpan(
+                        TextSpan(text: 'Sign in with '),
+                        TextSpan(
                             text: 'StackOverflow',
-                            style: new TextStyle(
+                            style: TextStyle(
                                 fontFamily: "Lato",
                                 fontWeight: FontWeight.bold)),
                       ],

@@ -4,12 +4,12 @@ class UserList {
 
   UserList.fromMap(Map json) {
     ok = json['ok'];
-    users = new List<User>();
+    users = List<User>();
 
     List<Map> members = (json['members'] as List).cast();
 
     for (int i = 0; i < members.length; ++i) {
-      users.add(new User.fromMap(members[i]));
+      users.add(User.fromMap(members[i]));
     }
   }
 }
@@ -22,7 +22,7 @@ class User {
   bool deleted;
 
   User.fromMap(Map json) {
-    profile = new Profile.fromMap(json['profile']);
+    profile = Profile.fromMap(json['profile']);
     id = json['id'];
     name = json['name'];
     isBot = json['is_bot'];

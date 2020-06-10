@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
 
 import 'package:flutter_overflow/components/generic_stack_button.dart';
 import 'package:flutter_overflow/pages/stack_login.dart';
@@ -29,7 +28,7 @@ class StackButton extends StatelessWidget{
       @required this.onCancelledByUser,
       @required this.onFailure,
       this.scope = const [
-        'write_access',
+        'read_inbox',
         'no_expiry'
       ],
       this.redirectUrl
@@ -41,11 +40,12 @@ class StackButton extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return new GenericStackButton (
+    return GenericStackButton (
       clientId: clientId,
       clientSecret: clientSecret,
       onCancelledByUser: onCancelledByUser,
       onFailure: onFailure,
+      onSuccess: onSuccess,
       onTap: (){
         onTap(context);
 
@@ -54,8 +54,8 @@ class StackButton extends StatelessWidget{
   }
 
   onTap(BuildContext context) async {
-    bool success = await Navigator.of(context).push(new MaterialPageRoute<bool>(
-      builder: (BuildContext context) => new StackLoginWebViewPage(
+    bool success = await Navigator.of(context).push(MaterialPageRoute<bool>(
+      builder: (BuildContext context) => StackLoginWebViewPage(
         clientId: clientId,
         clientSecret: clientSecret,
         scope: scope,

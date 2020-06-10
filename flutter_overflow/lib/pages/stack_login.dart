@@ -23,7 +23,7 @@ class StackLoginWebViewPage extends StatefulWidget {
 
   @override
   _StackLoginWebViewPageState createState() =>
-      new _StackLoginWebViewPageState();
+      _StackLoginWebViewPageState();
 }
 
 class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
@@ -31,7 +31,7 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    final flutterWebviewPlugin = new FlutterWebviewPlugin();
+    final flutterWebviewPlugin = FlutterWebviewPlugin();
     final String clientId = widget.clientId;
     final String redirectUrl = widget.redirectUrl;
     final String scope = widget.scope.join(',');
@@ -39,7 +39,7 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
     if (!setupUrlChangedListener) {
       flutterWebviewPlugin.onUrlChanged.listen((String changedUrl) async {
         if (changedUrl.startsWith(widget.redirectUrl)) {
-          Uri uri = new Uri().resolve(changedUrl);
+          Uri uri = Uri().resolve(changedUrl);
           String code = uri.queryParameters["code"];
           final http.Response response =
               await http.post("https://stackoverflow.com/oauth/access_tocken", body: {
@@ -49,7 +49,7 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
             "code": code,
           });
 
-          Token token = new Token.fromMap(json.decode(response.body));
+          Token token = Token.fromMap(json.decode(response.body));
           await Token.storeAccessToken(token.accessToken);
           Navigator.of(context).pop(true);
         }
@@ -57,13 +57,11 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
       setupUrlChangedListener = true;
     }
 
-
-    return new WebviewScaffold(
-      appBar: new AppBar(
-        title: new Text("Log in with Stack Overflow"),
+    return WebviewScaffold(
+      appBar: AppBar(
+        title: Text("Log in with Stack Overflow"),
       ),
-      url:
-        "https://stackoverflow.com/oauth?client_id=18040&redirect_uri=https://www.vogella.com",
+      url: "https://stackoverflow.com/oauth?client_id=$clientId&scope=$scope&redirect_uri=$redirectUrl",
     );
   }
 }

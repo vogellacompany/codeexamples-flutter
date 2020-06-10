@@ -9,12 +9,12 @@ Future<UserIdentity> getUserIdentity(String accessToken) async {
   String endpoint = "https://stack.com/api/users.identity?token=$accessToken";
   final http.Response response = await http.get(endpoint);
 
-  return new UserIdentity.fromMap(json.decode(response.body));
+  return UserIdentity.fromMap(json.decode(response.body));
 }
 
 Future<UserList> getUsers(String accessToken) async {
   String endpoint = "https://stack.com/api/users.list?token=$accessToken";
   final http.Response response = await http.get(endpoint);
 
-  return new UserList.fromMap(json.decode(response.body));
+  return UserList.fromMap(json.decode(response.body));
 }

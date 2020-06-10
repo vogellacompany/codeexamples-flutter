@@ -4,7 +4,7 @@ class UserIdentity {
 
   UserIdentity.fromMap(Map json) {
     ok = json['ok'];
-    user = new User.fromMap(json['user']);
+    user = User.fromMap(json['user']);
   }
 }
 
