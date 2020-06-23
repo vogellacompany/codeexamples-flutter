@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
-import 'data.dart';
+import 'Data.dart';
 
-class InputPage extends StatefulWidget{
+//textfield with input management
+class UrlForm extends StatefulWidget {
+
+  final _UrlFormState state = new _UrlFormState();
+  
+  getInput(){
+    return state.d;
+  }
+
   @override
-  _InputPageSate createState() => new _InputPageSate();
+  _UrlFormState createState() => state;
 }
 
-class _InputPageSate extends State<InputPage>{
-  var myController = TextEditingController();
-  var myTimeController = TextEditingController();
-  var url = "null";
-  var d = Data(text: "null", seconds: 0);
+
+class _UrlFormState extends State<UrlForm> {
+  final myController = TextEditingController();
+  final myTimeController = TextEditingController();
+  String url = "null";
+  Data d = Data(text: "null", seconds: 0);
 
   @override
   void initState() {
@@ -29,10 +38,9 @@ class _InputPageSate extends State<InputPage>{
     RegExp regExp = new RegExp(urlPattern, caseSensitive: false, multiLine: false,);
     var result = regExp.hasMatch(myController.text); 
     if(!result){
-      Navigator.pop(context);
       return showDialog<void>(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Invalid URL'),
@@ -47,7 +55,7 @@ class _InputPageSate extends State<InputPage>{
               FlatButton(
                 child: Text('OK'),
                 onPressed: () {
-                  Navigator.pop(context, d); 
+                  Navigator.of(context).pop();
                 },
               ),
             ],
@@ -58,26 +66,24 @@ class _InputPageSate extends State<InputPage>{
     else{
       url = myController.text;
       d.text = url;
-      int timeInterval = int.parse(myTimeController.text);
-      d.seconds = timeInterval;
-      Navigator.pop(context, d); 
     }
+
+    int timeInterval = int.parse(myTimeController.text);
+    d.seconds = timeInterval;
   }
 
   @override
   Widget build(BuildContext context) {
     return 
-     new Scaffold(
-        appBar: AppBar(
-          title: const Text('Type In'),
-          backgroundColor: Colors.blueGrey[900],
-        ),
-        body: Center(
-          child: Container(
-            height: 300,
+     new AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            content: 
+            Container(
+              height: 100.0,
               child: Column(
               children: <Widget>[
-                    TextField(
+                  new Expanded(
+                    child: TextField(
                           autofocus: true,
                           decoration: new InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -89,7 +95,9 @@ class _InputPageSate extends State<InputPage>{
                           labelText: 'Enter Valid URL', hintText: 'http://www.vogella.com'),
                           controller: myController,
                     ),
-                    TextField(
+                  ),
+                  new Expanded(
+                    child: TextField(
                           autofocus: true,
                           decoration: new InputDecoration(
                             focusedBorder: OutlineInputBorder(
@@ -101,20 +109,22 @@ class _InputPageSate extends State<InputPage>{
                           labelText: 'Enter the Time Interval', hintText: 'e.g. 10'),
                           controller: myTimeController,
                     ),
-                new FlatButton(
+                  )
+                ],
+              ),),
+            actions: <Widget>[
+              new FlatButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
-                    Navigator.pop(context, d); 
+                    Navigator.pop(context);
                   }),
-                new FlatButton(
+              new FlatButton(
                   child: const Text('OK'),
                   onPressed: () {
+                    Navigator.pop(context); // this need to be put first, cannot have two alert at the same time
                     handleUrl();                    
-                  }),
-                ],
-              ),
-            ),
-        ),
-      );
+                  })
+            ],
+     );
   }
 }

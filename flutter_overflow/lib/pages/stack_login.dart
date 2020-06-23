@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_overflow/data/tocken.dart';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StackLoginWebViewPage extends StatefulWidget {
   const StackLoginWebViewPage({
@@ -42,15 +42,15 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
           Uri uri = Uri().resolve(changedUrl);
           String code = uri.queryParameters["code"];
           final http.Response response =
-              await http.post("https://stackoverflow.com/oauth/access_tocken", body: {
+              await http.post("https://stackoverflow.com/oauth/access_token/json", body: {
             "client_id": widget.clientId,
             "redirect_uri": widget.redirectUrl,
             "client_secret": widget.clientSecret,
             "code": code,
           });
-
-          Token token = Token.fromMap(json.decode(response.body));
-          await Token.storeAccessToken(token.accessToken);
+          Map userMap = jsonDecode(response.body);
+          String token = userMap["access_token"];
+          storeToken(token);
           Navigator.of(context).pop(true);
         }
       });
@@ -58,10 +58,17 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
     }
 
     return WebviewScaffold(
-      appBar: AppBar(
+      appBar: new AppBar(
         title: Text("Log in with Stack Overflow"),
       ),
       url: "https://stackoverflow.com/oauth?client_id=$clientId&scope=$scope&redirect_uri=$redirectUrl",
     );
+  }
+
+  storeToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'token';
+    final value = token;
+    await prefs.setString(key, value);
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter_overflow/components/error_screen.dart';
 import 'package:flutter_overflow/components/tag.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/pages/question_page.dart';
-import 'package:flutter_overflow/pages/stack_log_in.dart';
+import 'package:flutter_overflow/pages/stack_login.dart';
 import 'package:flutter_overflow/service/theme_provider.dart';
 import 'package:flutter_overflow/util.dart';
 import 'package:provider/provider.dart';
@@ -48,14 +48,10 @@ class _HomepageState extends State<Homepage> {
           ),
           FlatButton.icon(
             onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
-            );
+              onPressed(context);
           },
             icon: Icon(Icons.account_box), 
-            label: Text('${_tags.length}'),
+            label: Text('Login'),
           ),
           FlatButton.icon(
             label: Text('${_tags.length}'),
@@ -137,6 +133,69 @@ class _HomepageState extends State<Homepage> {
       return _QuestionTile(question);
     }).toList();
   }
+
+  onPressed(BuildContext context) async {
+    String clientId = "18040";
+    String clientSecret = "SjS2cdsgTmh9VlOlQQuyiA((";
+    String redirectUrl = "https://www.vogella.com";
+    VoidCallback onSuccess = () async {
+      _alert(context, "sucessfully logged in");
+    };
+    VoidCallback onFailure = () {
+      _alert(context, "log in failed");
+    };
+    VoidCallback onCancelledByUser = () {
+      _alert(context, "log in cancelled");
+    };
+    List scope = const [
+        'read_inbox',
+        'no_expiry'
+      ];
+    bool success = await Navigator.of(context).push(MaterialPageRoute<bool>(
+      builder: (BuildContext context) => StackLoginWebViewPage(
+        clientId: clientId,
+        clientSecret: clientSecret,
+        scope: scope,
+        redirectUrl: redirectUrl == null ? "https://www.vogella.com" :redirectUrl,
+      ),
+    ));
+
+    if(success == null){
+      onCancelledByUser();
+    }
+    else if(success == false){
+      onFailure();
+    }
+    else if(success){
+      onSuccess();
+    }
+
+  }
+
+  _alert(BuildContext context, String s){
+      Widget okButton = FlatButton(
+        child: Text("OK"),
+        onPressed: () {
+          Navigator.of(context).pop();
+         },
+      );
+
+      AlertDialog alert = AlertDialog(        
+        title: Text("Alert"),
+        content: Text(s),
+        actions: [
+          okButton,
+        ],
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return alert;
+        }
+      );
+    }
+
 }
 
 class _TagDialog extends StatefulWidget {
