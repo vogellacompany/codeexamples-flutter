@@ -58,7 +58,7 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
     }
 
     return WebviewScaffold(
-      appBar: new AppBar(
+      appBar: AppBar(
         title: Text("Log in with Stack Overflow"),
       ),
       url: "https://stackoverflow.com/oauth?client_id=$clientId&scope=$scope&redirect_uri=$redirectUrl",

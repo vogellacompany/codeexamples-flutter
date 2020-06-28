@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overflow/components/error_screen.dart';
 import 'package:flutter_overflow/components/tag.dart';
+import 'package:flutter_overflow/data/key.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/pages/question_page.dart';
 import 'package:flutter_overflow/pages/stack_login.dart';
@@ -135,8 +136,10 @@ class _HomepageState extends State<Homepage> {
   }
 
   onPressed(BuildContext context) async {
+    StackSecret secret = await SecretLoader(secretPath: "assets/secret.json").load();
     String clientId = "18040";
-    String clientSecret = "SjS2cdsgTmh9VlOlQQuyiA((";
+    String clientSecret = secret.stackKey;
+    print(secret.stackKey);
     String redirectUrl = "https://www.vogella.com";
     VoidCallback onSuccess = () async {
       _alert(context, "sucessfully logged in");
