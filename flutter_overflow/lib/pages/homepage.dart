@@ -85,6 +85,20 @@ class _HomepageState extends State<Homepage> {
                   ),
                 );
               }
+              if (snapshot.data==null) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('No questions matched your filter'),
+                      RaisedButton(
+                        child: Text('Adjust tags'),
+                        onPressed: () => _showTagsDialog(context),
+                      )
+                    ],
+                  ),
+                );
+              }
               return RefreshIndicator(
                 child: ListView(
                   physics: AlwaysScrollableScrollPhysics(),
@@ -137,9 +151,8 @@ class _HomepageState extends State<Homepage> {
 
   onPressed(BuildContext context) async {
     StackSecret secret = await SecretLoader(secretPath: "assets/secret.json").load();
-    String clientId = "18040";
+    String clientId = "18229";
     String clientSecret = secret.stackKey;
-    print(secret.stackKey);
     String redirectUrl = "https://www.vogella.com";
     VoidCallback onSuccess = () async {
       _alert(context, "sucessfully logged in");
@@ -152,7 +165,8 @@ class _HomepageState extends State<Homepage> {
     };
     List scope = const [
         'read_inbox',
-        'no_expiry'
+        'no_expiry',
+        'write_access'
       ];
     bool success = await Navigator.of(context).push(MaterialPageRoute<bool>(
       builder: (BuildContext context) => StackLoginWebViewPage(

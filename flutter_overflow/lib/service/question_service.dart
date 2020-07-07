@@ -21,10 +21,14 @@ Future<List<Question>> fetchLatestQuestions({
     if (tags != null && tags.isNotEmpty) {
       var taggedString = Uri.encodeQueryComponent(tags.join(';'));
       requestUrl += '&tagged=$taggedString';
+    }else{
+      return null;
     }
     try {
+      print(requestUrl);
       var response = await http.get(requestUrl);
       var json = jsonDecode(response.body);
+      print(json);
       if (response.statusCode == 200) {
         var questions = json['items'].map<Question>((postJson) {
           return Question.fromJson(postJson);

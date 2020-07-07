@@ -17,6 +17,9 @@ void saveQuestionsToCache(List<Question> questions) async {
 
 Future<List<Question>> loadQuestionsFromCache() async {
   final directory = await getApplicationDocumentsDirectory();
+  if(directory == null){
+    throw QuestionsNotFoundException();
+  }
   final file = File(directory.path + "/questions.json");
   if (!await file.exists()) {
     throw QuestionsNotFoundException();

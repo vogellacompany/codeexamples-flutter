@@ -90,6 +90,10 @@ class APIError {
 
   APIError(this.statusCode, this.errorMessage, this.errorName);
 
+  APIError.message(String message){
+    errorMessage = message;
+  }
+
   factory APIError.fromJson(Map<String, dynamic> json) =>
       _$APIErrorFromJson(json);
 }

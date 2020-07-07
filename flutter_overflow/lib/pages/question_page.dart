@@ -5,6 +5,7 @@ import 'package:flutter_overflow/components/tag.dart';
 import 'package:flutter_overflow/data/models.dart';
 import 'package:flutter_overflow/service/question_service.dart';
 import 'package:flutter_overflow/service/theme_provider.dart';
+import 'package:flutter_overflow/service/vote_service.dart';
 import 'package:flutter_overflow/util.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +66,7 @@ class _QuestionPageState extends State<QuestionPage> {
                         Center(child: Text('There are no answers yet')),
                       // NOTE: This feature is only available in Dart 2.3; SDK version is required 2.2.2
                       ...answers.map((Answer answer) {
-                        return _AnswerCard(answer);
+                        return AnswerCard(answer);
                       }),
                     ],
                   );
@@ -144,13 +145,23 @@ class _QuestionPart extends StatelessWidget {
   }
 }
 
-class _AnswerCard extends StatelessWidget {
-  final Answer _answer;
+class AnswerCard extends StatefulWidget{
+  final Answer answer;
 
-  _AnswerCard(this._answer, {Key key}) : super(key: key);
+  AnswerCard(this.answer, {Key key}) : super(key: key);
+
+  @override
+  _AnswerCardState createState() => _AnswerCardState();
+}
+
+class _AnswerCardState extends State<AnswerCard> {
+  Answer _updateAnswer;
+  var isUp = false;
+  var isDown = false;
 
   @override
   Widget build(BuildContext context) {
+    Answer _answer = _updateAnswer!=null?_updateAnswer:widget.answer;
     final Color _headingColor = _answer.isAccepted
         ? Colors.white
         : Theme.of(context).textTheme.body1.color;
@@ -166,6 +177,16 @@ class _AnswerCard extends StatelessWidget {
                   : Theme.of(context).backgroundColor,
               child: Row(
                 children: [
+                  Flexible(
+                    fit: FlexFit.tight,
+                    flex: 2,
+                    child: Column(
+                              children: <Widget>[
+                                      IconButton(onPressed: () => upVote(context, _answer.answerId), icon: Icon(Icons.arrow_upward),color: isUp?Colors.red:Colors.black),
+                                      IconButton(onPressed: () => downVote(context, _answer.answerId),icon: Icon(Icons.arrow_downward),color: isDown?Colors.red:Colors.black)
+                                    ],
+                        ),
+                  ),
                   Flexible(
                     fit: FlexFit.tight,
                     flex: 2,
@@ -210,4 +231,72 @@ class _AnswerCard extends StatelessWidget {
       ),
     );
   }
+
+
+  upVote(BuildContext context, int answerId) async {
+    Answer _newAnswer = await upvoteAnswer(answerId);
+    if(_newAnswer == null){
+      _alert(context, "login first");
+    }
+    else if(_newAnswer is APIError){
+      _alert(context, "error");
+    }
+    else {
+        setState(() {
+        if(isUp){
+          isUp = false;
+          isDown = false;
+          _alert(context, "Cancelled!");
+        }else{
+          isUp = true;
+          isDown = false;
+        /* upvoteAnswer(answerId).then((answer){
+            setState(() {
+              this._updateAnswer = answer;
+            });
+          }); */
+          _updateAnswer = _newAnswer;
+          _alert(context, "Upvoted!");
+        }
+      });
+    }
+  }
+
+  downVote(BuildContext context, int answerId){
+    setState((){
+      if(isDown){
+        isUp = false;
+        isDown = false;
+        _alert(context, "Cancelled!");
+      }else{
+        isUp = false;
+        isDown = true;  
+        _alert(context, "Downvoted!");
+      }
+    });
+  }
+
+  _alert(BuildContext context, String s){
+      Widget okButton = FlatButton(
+        child: Text("OK"),
+        onPressed: () {
+          Navigator.of(context).pop();
+         },
+      );
+
+      AlertDialog alert = AlertDialog(        
+        title: Text("Alert"),
+        content: Text(s),
+        actions: [
+          okButton,
+        ],
+      );
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return alert;
+        }
+      );
+    }
 }
