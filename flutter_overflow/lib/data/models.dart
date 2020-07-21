@@ -90,7 +90,7 @@ class APIError {
 
   APIError(this.statusCode, this.errorMessage, this.errorName);
 
-  APIError.message(String message){
+  APIError.message(String message) {
     errorMessage = message;
   }
 

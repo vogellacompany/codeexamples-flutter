@@ -21,7 +21,7 @@ Future<List<Question>> fetchLatestQuestions({
     if (tags != null && tags.isNotEmpty) {
       var taggedString = Uri.encodeQueryComponent(tags.join(';'));
       requestUrl += '&tagged=$taggedString';
-    }else{
+    } else {
       return null;
     }
     try {

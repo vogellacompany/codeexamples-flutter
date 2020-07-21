@@ -50,8 +50,8 @@ class _HomepageState extends State<Homepage> {
           FlatButton.icon(
             onPressed: () {
               onPressed(context);
-          },
-            icon: Icon(Icons.account_box), 
+            },
+            icon: Icon(Icons.account_box),
             label: Text('Login'),
           ),
           FlatButton.icon(
@@ -85,7 +85,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                 );
               }
-              if (snapshot.data==null) {
+              if (snapshot.data == null) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -121,6 +121,7 @@ class _HomepageState extends State<Homepage> {
       ),
     );
   }
+
   void _showTagsDialog(BuildContext context) async {
     List<String> newTags = await showDialog(
       context: context,
@@ -150,7 +151,8 @@ class _HomepageState extends State<Homepage> {
   }
 
   onPressed(BuildContext context) async {
-    StackSecret secret = await SecretLoader(secretPath: "assets/secret.json").load();
+    StackSecret secret =
+        await SecretLoader(secretPath: "assets/secret.json").load();
     String clientId = "18229";
     String clientSecret = secret.stackKey;
     String redirectUrl = "https://www.vogella.com";
@@ -163,56 +165,48 @@ class _HomepageState extends State<Homepage> {
     VoidCallback onCancelledByUser = () {
       _alert(context, "log in cancelled");
     };
-    List scope = const [
-        'read_inbox',
-        'no_expiry',
-        'write_access'
-      ];
+    List scope = const ['read_inbox', 'no_expiry', 'write_access'];
     bool success = await Navigator.of(context).push(MaterialPageRoute<bool>(
       builder: (BuildContext context) => StackLoginWebViewPage(
         clientId: clientId,
         clientSecret: clientSecret,
         scope: scope,
-        redirectUrl: redirectUrl == null ? "https://www.vogella.com" :redirectUrl,
+        redirectUrl:
+            redirectUrl == null ? "https://www.vogella.com" : redirectUrl,
       ),
     ));
 
-    if(success == null){
+    if (success == null) {
       onCancelledByUser();
-    }
-    else if(success == false){
+    } else if (success == false) {
       onFailure();
-    }
-    else if(success){
+    } else if (success) {
       onSuccess();
     }
-
   }
 
-  _alert(BuildContext context, String s){
-      Widget okButton = FlatButton(
-        child: Text("OK"),
-        onPressed: () {
-          Navigator.of(context).pop();
-         },
-      );
+  _alert(BuildContext context, String s) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
 
-      AlertDialog alert = AlertDialog(        
-        title: Text("Alert"),
-        content: Text(s),
-        actions: [
-          okButton,
-        ],
-      );
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert"),
+      content: Text(s),
+      actions: [
+        okButton,
+      ],
+    );
 
-      showDialog(
+    showDialog(
         context: context,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return alert;
-        }
-      );
-    }
-
+        });
+  }
 }
 
 class _TagDialog extends StatefulWidget {
