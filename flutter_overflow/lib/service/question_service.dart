@@ -14,6 +14,7 @@ const QUESTION_MARKDOWN_FILTER = '!9Z(-wwK4f';
 Future<List<Question>> fetchLatestQuestions({
   List<String> tags,
   bool force = false,
+  http.Client client,
 }) async {
   if (force) {
     var requestUrl =
@@ -25,17 +26,14 @@ Future<List<Question>> fetchLatestQuestions({
       return null;
     }
     try {
-      print(requestUrl);
-      var response = await http.get(requestUrl);
+      var response = await client.get(requestUrl);
       var json = jsonDecode(response.body);
-      print(json);
+
       if (response.statusCode == 200) {
         var questions = json['items'].map<Question>((postJson) {
           return Question.fromJson(postJson);
         }).toList();
-
         saveQuestionsToCache(questions);
-
         return questions;
       } else {
         var error = APIError.fromJson(json);
@@ -48,6 +46,7 @@ Future<List<Question>> fetchLatestQuestions({
     }
   } else {
     try {
+      print("heree");
       return await loadQuestionsFromCache();
     } on QuestionsNotFoundException catch (_) {
       return fetchLatestQuestions(tags: tags, force: true);

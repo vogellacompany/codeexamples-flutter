@@ -12,6 +12,8 @@ import 'package:flutter_overflow/service/theme_provider.dart';
 import 'package:flutter_overflow/util.dart';
 import 'package:provider/provider.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'package:flutter_overflow/service/question_service.dart';
 
 class Homepage extends StatefulWidget {
@@ -29,7 +31,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    _questionsFuture = fetchLatestQuestions(tags: _tags);
+    _questionsFuture = fetchLatestQuestions(tags: _tags, client: http.Client());
   }
 
   @override
@@ -106,8 +108,8 @@ class _HomepageState extends State<Homepage> {
                 ),
                 onRefresh: () async {
                   setState(() {
-                    _questionsFuture =
-                        fetchLatestQuestions(tags: _tags, force: true);
+                    _questionsFuture = fetchLatestQuestions(
+                        tags: _tags, force: true, client: http.Client());
                   });
                 },
               );
@@ -139,7 +141,8 @@ class _HomepageState extends State<Homepage> {
     if (!listEquals(_tags, newTags)) {
       setState(() {
         _tags = newTags;
-        _questionsFuture = fetchLatestQuestions(tags: _tags, force: true);
+        _questionsFuture = fetchLatestQuestions(
+            tags: _tags, force: true, client: http.Client());
       });
     }
   }

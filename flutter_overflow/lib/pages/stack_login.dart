@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_overflow/data/key.dart';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
@@ -23,8 +22,7 @@ class StackLoginWebViewPage extends StatefulWidget {
   final List scope;
 
   @override
-  _StackLoginWebViewPageState createState() =>
-      _StackLoginWebViewPageState();
+  _StackLoginWebViewPageState createState() => _StackLoginWebViewPageState();
 }
 
 class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
@@ -42,8 +40,8 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
         if (changedUrl.startsWith(widget.redirectUrl)) {
           Uri uri = Uri().resolve(changedUrl);
           String code = uri.queryParameters["code"];
-          final http.Response response =
-              await http.post("https://stackoverflow.com/oauth/access_token/json", body: {
+          final http.Response response = await http
+              .post("https://stackoverflow.com/oauth/access_token/json", body: {
             "client_id": widget.clientId,
             "redirect_uri": widget.redirectUrl,
             "client_secret": widget.clientSecret,
@@ -62,7 +60,8 @@ class _StackLoginWebViewPageState extends State<StackLoginWebViewPage> {
       appBar: AppBar(
         title: Text("Log in with Stack Overflow"),
       ),
-      url: "https://stackoverflow.com/oauth?client_id=$clientId&scope=$scope&redirect_uri=$redirectUrl",
+      url:
+          "https://stackoverflow.com/oauth?client_id=$clientId&scope=$scope&redirect_uri=$redirectUrl",
     );
   }
 

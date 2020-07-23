@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_overflow/main.dart';
 import 'package:flutter_overflow/service/theme_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_overflow/pages/homepage.dart';
