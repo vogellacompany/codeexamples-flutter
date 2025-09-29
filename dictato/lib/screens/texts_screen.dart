@@ -194,7 +194,9 @@ class _TextsScreenState extends State<TextsScreen> {
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        border: Border.left(width: 3, color: Theme.of(context).primaryColor),
+                        border: Border(
+                          left: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                        ),
                         color: Colors.blue[50],
                       ),
                       child: Text(
