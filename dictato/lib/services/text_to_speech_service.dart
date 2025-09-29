@@ -25,6 +25,11 @@ class TextToSpeechService {
     // Set default pitch
     await _flutterTts!.setPitch(1.0);
     
+    // Set up completion handler to track speaking state
+    _flutterTts!.setCompletionHandler(() {
+      _isCurrentlySpeaking = false;
+    });
+    
     _isInitialized = true;
   }
 
@@ -65,33 +70,37 @@ class TextToSpeechService {
   Future<void> speak(String text) async {
     if (text.trim().isEmpty) return;
     
+    _isCurrentlySpeaking = true;
     await _tts.speak(text);
   }
 
   /// Stop current speech
   Future<void> stop() async {
+    _isCurrentlySpeaking = false;
     await _tts.stop();
   }
 
   /// Pause current speech
   Future<void> pause() async {
+    _isCurrentlySpeaking = false;
     await _tts.pause();
   }
 
+  bool _isCurrentlySpeaking = false;
+
   /// Check if TTS is currently speaking
   Future<bool> get isSpeaking async {
-    final state = await _tts.getState();
-    return state == FlutterTtsState.playing;
+    return _isCurrentlySpeaking;
   }
 
   /// Get available languages
   Future<List<dynamic>> getLanguages() async {
-    return await _tts.getLanguages();
+    return await _tts.getLanguages;
   }
 
   /// Get available voices for current language
   Future<List<dynamic>> getVoices() async {
-    return await _tts.getVoices();
+    return await _tts.getVoices;
   }
 
   /// Set voice by name
@@ -117,7 +126,7 @@ class TextToSpeechService {
   }
 
   /// Set error callback
-  void setErrorHandler(void Function(String message) onError) {
+  void setErrorHandler(void Function(dynamic message) onError) {
     _tts.setErrorHandler(onError);
   }
 
