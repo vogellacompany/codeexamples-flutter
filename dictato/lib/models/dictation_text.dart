@@ -54,29 +54,46 @@ class DictationText {
     // Simple segmentation - split by sentences but keep reasonable length
     final sentences = text.split(RegExp(r'[.!?]+\s*'));
     final segments = <String>[];
-    String currentSegment = '';
-
+    
     for (final sentence in sentences) {
       final trimmedSentence = sentence.trim();
       if (trimmedSentence.isEmpty) continue;
-
-      // If adding this sentence makes the segment too long, start a new one
-      if (currentSegment.isNotEmpty &&
-          (currentSegment.length + trimmedSentence.length) > 80) {
-        segments.add(currentSegment.trim());
-        currentSegment = trimmedSentence;
-      } else {
-        if (currentSegment.isNotEmpty) {
-          currentSegment += '. $trimmedSentence';
-        } else {
-          currentSegment = trimmedSentence;
+      
+      // If sentence is very long, split it further
+      if (trimmedSentence.length > 120) {
+        // Split on commas or conjunctions
+        final parts = trimmedSentence.split(RegExp(r',\s*|and\s+|or\s+|but\s+'));
+        String currentSegment = '';
+        
+        for (final part in parts) {
+          final trimmedPart = part.trim();
+          if (trimmedPart.isEmpty) continue;
+          
+          if (currentSegment.isNotEmpty && 
+              (currentSegment.length + trimmedPart.length) > 80) {
+            segments.add(currentSegment.trim());
+            currentSegment = trimmedPart;
+          } else {
+            if (currentSegment.isNotEmpty) {
+              currentSegment += ', $trimmedPart';
+            } else {
+              currentSegment = trimmedPart;
+            }
+          }
         }
+        
+        if (currentSegment.isNotEmpty) {
+          segments.add(currentSegment.trim());
+        }
+      } else {
+        // Add sentence as is (or reconstruct with period)
+        final segmentText = trimmedSentence.endsWith('.') || 
+                           trimmedSentence.endsWith('!') || 
+                           trimmedSentence.endsWith('?')
+            ? trimmedSentence 
+            : '$trimmedSentence.';
+        segments.add(segmentText);
       }
-    }
-
-    // Add the last segment if it's not empty
-    if (currentSegment.isNotEmpty) {
-      segments.add(currentSegment.trim());
     }
 
     return segments.isEmpty ? [text] : segments;
