@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'l10n/app_localizations.dart';
 
+import 'models/models.dart';
 import 'screens/home_screen.dart';
 import 'services/services.dart';
 
@@ -210,6 +211,3 @@ class AppState extends ChangeNotifier {
     await _loadData();
   }
 }
-
-// Import models at the end to avoid circular dependencies
-import 'models/models.dart';
