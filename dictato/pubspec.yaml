@@ -37,10 +37,10 @@ dependencies:
   json_annotation: ^4.9.0
   
   # Text-to-Speech
-  flutter_tts: ^3.8.5
+  flutter_tts: ^4.2.3
   
   # Speech recognition for voice commands
-  speech_to_text: ^6.6.0
+  speech_to_text: ^7.3.0
   
   # Internationalization
   intl: ^0.20.2
@@ -57,7 +57,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   
   # Linting
-  flutter_lints: ^3.0.1
+  flutter_lints: ^6.0.0
   
   # Testing utilities
   mockito: ^5.4.3

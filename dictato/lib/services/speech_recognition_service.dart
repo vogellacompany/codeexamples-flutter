@@ -1,4 +1,5 @@
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:speech_to_text/speech_recognition_result.dart';
 
 /// Service for speech recognition functionality
 class SpeechRecognitionService {
@@ -79,8 +80,10 @@ class SpeechRecognitionService {
       localeId: speechLanguage,
       listenFor: timeout ?? const Duration(seconds: 30),
       pauseFor: const Duration(seconds: 3),
-      cancelOnError: false,
-      partialResults: false,
+      listenOptions: stt.SpeechListenOptions(
+        cancelOnError: false,
+        partialResults: false,
+      ),
     );
   }
 
