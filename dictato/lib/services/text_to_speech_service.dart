@@ -25,6 +25,11 @@ class TextToSpeechService {
     // Set default pitch
     await _flutterTts!.setPitch(1.0);
     
+    // Set up completion handler to track speaking state
+    _flutterTts!.setCompletionHandler(() {
+      _isCurrentlySpeaking = false;
+    });
+    
     _isInitialized = true;
   }
 
@@ -65,29 +70,27 @@ class TextToSpeechService {
   Future<void> speak(String text) async {
     if (text.trim().isEmpty) return;
     
+    _isCurrentlySpeaking = true;
     await _tts.speak(text);
   }
 
   /// Stop current speech
   Future<void> stop() async {
+    _isCurrentlySpeaking = false;
     await _tts.stop();
   }
 
   /// Pause current speech
   Future<void> pause() async {
+    _isCurrentlySpeaking = false;
     await _tts.pause();
   }
 
+  bool _isCurrentlySpeaking = false;
+
   /// Check if TTS is currently speaking
   Future<bool> get isSpeaking async {
-    // In flutter_tts 4.x, getState() has been removed
-    // We'll track state internally or use alternative methods
-    try {
-      // Alternative: try to get synthesizer state if available
-      return false; // Placeholder - might need different approach
-    } catch (e) {
-      return false;
-    }
+    return _isCurrentlySpeaking;
   }
 
   /// Get available languages
@@ -125,10 +128,8 @@ class TextToSpeechService {
   }
 
   /// Set error callback
-  void setErrorHandler(void Function(String message) onError) {
-    _tts.setErrorHandler((dynamic message) {
-      onError(message.toString());
-    });
+  void setErrorHandler(void Function(dynamic message) onError) {
+    _tts.setErrorHandler(onError);
   }
 
   /// Set progress callback for word-by-word highlighting
