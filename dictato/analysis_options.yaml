@@ -1,0 +1,40 @@
+include: package:flutter_lints/flutter.yaml
+
+# Additional lint rules for better code quality
+linter:
+  rules:
+    # Prefer const constructors where possible
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    prefer_const_declarations: true
+    prefer_const_literals_to_create_immutables: true
+    
+    # Prefer final for local variables
+    prefer_final_locals: true
+    prefer_final_in_for_each: true
+    
+    # Use proper naming conventions
+    camel_case_types: true
+    camel_case_extensions: true
+    file_names: true
+    
+    # Avoid empty statements and catch blocks
+    avoid_empty_else: true
+    empty_catches: true
+    
+    # Use proper imports
+    avoid_relative_lib_imports: true
+    prefer_relative_imports: true
+    
+    # Documentation
+    public_member_api_docs: false # Turn off for example project
+    
+    # Error handling
+    avoid_catching_errors: true
+    
+    # Performance
+    avoid_function_literals_in_foreach_calls: true
+    
+    # Style
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
