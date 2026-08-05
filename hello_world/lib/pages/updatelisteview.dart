@@ -22,7 +22,7 @@ class ListContent extends StatefulWidget {
 
 class _ListContentState extends State<ListContent> {
   List<String> _list = ["Hello", "Testing"];
-  List<Widget> _widgets ;
+  late List<Widget> _widgets;
   @override
   Widget build(BuildContext context) {
     _widgets = getList( _list);
@@ -36,7 +36,7 @@ class _ListContentState extends State<ListContent> {
             children: _widgets
           ),
         ),
-        RaisedButton(
+        ElevatedButton(
           child: Text("Update"),
           onPressed: _swapList,
         )

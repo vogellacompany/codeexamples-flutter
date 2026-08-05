@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groovin_material_icons/groovin_material_icons.dart';
-import 'package:web/data/user.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:web_app_prototype/data/user.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,21 +9,21 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _email, _password;
+  String? _email, _password;
   bool _isObscure = true;
-  Color _eyeColor;
+  Color? _eyeColor;
   List _loginMethod = [
     {
       "title": "facebook",
-      "icon": GroovinMaterialIcons.facebook,
+      "icon": FontAwesomeIcons.facebook,
     },
     {
       "title": "google",
-      "icon": GroovinMaterialIcons.google,
+      "icon": FontAwesomeIcons.google,
     },
     {
       "title": "twitter",
-      "icon": GroovinMaterialIcons.twitter,
+      "icon": FontAwesomeIcons.twitter,
     },
   ];
 
@@ -94,11 +94,11 @@ class _LoginPageState extends State<LoginPage> {
           .map((item) => Builder(
                 builder: (context) {
                   return IconButton(
-                      icon: Icon(item['icon'],
+                      icon: FaIcon(item['icon'],
                           color: Theme.of(context).iconTheme.color),
                       onPressed: () {
                         //TODO : Oauth2.0 login methods
-                        Scaffold.of(context).showSnackBar(new SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                           content: new Text("${item['title']}Login"),
                           action: new SnackBarAction(
                             label: "Cancell",
@@ -126,27 +126,31 @@ class _LoginPageState extends State<LoginPage> {
       child: SizedBox(
         height: 45.0,
         width: 270.0,
-        child: RaisedButton(
-          child: Text(
-            'Login',
-            style: Theme.of(context).primaryTextTheme.headline,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            shape: const StadiumBorder(side: BorderSide()),
           ),
-          color: Colors.black,
           onPressed: () {
-            //TODO authentication of quiz app with server
-            
+            final messenger = ScaffoldMessenger.of(context);
             if (!mockUsers.containsKey(_email)) {
-              return 'Username not exists';
+              messenger.showSnackBar(
+                const SnackBar(content: Text('Username does not exist')),
+              );
+              return;
             }
             if (mockUsers[_email] != _password) {
-              return 'Password does not match';
+              messenger.showSnackBar(
+                const SnackBar(content: Text('Password does not match')),
+              );
+              return;
             }
-            if ( mockUsers.containsKey(_email) && mockUsers[_email] == _password) {
-              //TODO jump to the second page
-              print('jump to the second page');
-            }
+            //TODO jump to the second page
           },
-          shape: StadiumBorder(side: BorderSide()),
+          child: Text(
+            'Login',
+            style: Theme.of(context).primaryTextTheme.headlineSmall,
+          ),
         ),
       ),
     );
@@ -157,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.only(top: 8.0),
       child: Align(
         alignment: Alignment.centerRight,
-        child: FlatButton(
+        child: TextButton(
           child: Text(
             'forgot password？',
             style: TextStyle(fontSize: 14.0, color: Colors.grey),
@@ -172,12 +176,13 @@ class _LoginPageState extends State<LoginPage> {
 
   TextFormField buildPasswordTextField(BuildContext context) {
     return TextFormField(
-      onSaved: (String value) => _password = value,
+      onSaved: (String? value) => _password = value,
       obscureText: _isObscure,
-      validator: (String value) {
-        if (value.isEmpty) {
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
           return 'please type in password';
         }
+        return null;
       },
       decoration: InputDecoration(
           labelText: 'Password',
@@ -202,17 +207,18 @@ class _LoginPageState extends State<LoginPage> {
       decoration: InputDecoration(
         labelText: 'Emall Address',
       ),
-      validator: (String value) {
+      validator: (String? value) {
         var emailReg = RegExp(
             r"[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?");
-        if(value.isEmpty){
+        if (value == null || value.isEmpty) {
           return 'please type in email';
         }
         if (!emailReg.hasMatch(value)) {
           return 'please give correct email format';
         }
+        return null;
       },
-      onSaved: (String value) => _email = value,
+      onSaved: (String? value) => _email = value,
     );
   }
 

@@ -13,7 +13,7 @@ class MyCustomPaintWidget extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return null;
+    return false;
   }
 
   // use CustomPaint as widget

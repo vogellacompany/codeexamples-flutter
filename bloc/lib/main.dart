@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'bloc_cart_page.dart';
+import 'cart_bloc.dart';
+import 'cart_provider.dart';
+import 'models/catalog.dart';
+import 'widgets/cart_button.dart';
+import 'widgets/product_square.dart';
+import 'widgets/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +41,7 @@ class MyHomePage extends StatelessWidget {
             stream: cartBloc.itemCount,
             initialData: 0,
             builder: (context, snapshot) => CartButton(
-                  itemCount: snapshot.data,
+                  itemCount: snapshot.data ?? 0,
                   onPressed: () {
                     Navigator.of(context).pushNamed(BlocCartPage.routeName);
                   },

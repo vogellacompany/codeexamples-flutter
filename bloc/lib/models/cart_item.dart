@@ -1,4 +1,4 @@
-import 'package:reactive_exploration/common/models/product.dart';
+import 'product.dart';
 
 /// A single line in the cart.
 class CartItem {
