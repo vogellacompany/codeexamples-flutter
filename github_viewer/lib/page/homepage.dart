@@ -1,106 +1,123 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:github_viewer/page/issue_page.dart';
-import 'package:github_viewer/util/util.dart';
-import 'package:http/http.dart' as http;
+
+import '../model/issue.dart';
+import '../service/github_service.dart';
+import '../util/util.dart';
+import 'issue_page.dart';
 
 class Homepage extends StatefulWidget {
-  @override
-  _HomepageState createState() => _HomepageState();
-}
+  const Homepage({super.key, required this.service});
 
-class Issue {
-  int number;
-  String state;
-  String title;
-  String body;
-  String userName;
-  DateTime createdAt;
+  final GithubService service;
+
+  @override
+  State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  Future<List<Issue>> issues;
+  late Future<List<Issue>> _issues;
+
+  @override
+  void initState() {
+    super.initState();
+    _issues = widget.service.fetchIssues();
+  }
+
+  Future<void> _refresh() async {
+    final issues = widget.service.fetchIssues();
+    setState(() => _issues = issues);
+    await issues;
+  }
 
   @override
   Widget build(BuildContext context) {
-    issues = getIssues();
+    final service = widget.service;
     return Scaffold(
       appBar: AppBar(
-        title: Text('GitHub Issue Viewer'),
+        title: Text('${service.owner}/${service.repository}'),
       ),
-      body: FutureBuilder(
-        future: issues,
-        builder: (BuildContext context, AsyncSnapshot<List<Issue>> snapshot) {
-          if (snapshot.hasData) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                return issues = getIssues();
-              },
-              child: ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, int index) {
-                  return _IssueCard(snapshot.data[index]);
-                },
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          } else {
-            return Container(
-              padding: EdgeInsets.all(80.0),
-              child: CircularProgressIndicator(),
+      body: FutureBuilder<List<Issue>>(
+        future: _issues,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return _ErrorMessage(
+              message: '${snapshot.error}',
+              onRetry: _refresh,
             );
           }
+          final issues = snapshot.data;
+          if (issues == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (issues.isEmpty) {
+            return const Center(
+              child: Text('This repository has no open issues.'),
+            );
+          }
+          return RefreshIndicator(
+            onRefresh: _refresh,
+            child: ListView.builder(
+              itemCount: issues.length,
+              itemBuilder: (context, index) => IssueCard(
+                issue: issues[index],
+                service: service,
+              ),
+            ),
+          );
         },
       ),
     );
   }
-
-  Future<List<Issue>> getIssues() async {
-    const url =
-        'https://api.stackexchange.com/2.2/search?order=desc&sort=votes&tagged=flutter&site=stackoverflow';
-    var response = await http.get(url);
-    var data = jsonDecode(response.body);
-    if (response.statusCode != 200) {
-      print('The API fetch failed: $data');
-      return Future.error(data);
-    }
-
-    var items = data['items'];
-    return items.map<Issue>((entry) {
-      return Issue()
-        ..state = 'Test'
-        ..number = entry['question_id']
-        ..title = entry['title']
-        ..body = entry['link']
-        ..userName = entry['owner']['display_name'];
-    }).toList();
-  }
 }
 
-class _IssueCard extends StatelessWidget {
-  final Issue issue;
+class IssueCard extends StatelessWidget {
+  const IssueCard({super.key, required this.issue, required this.service});
 
-  _IssueCard(this.issue);
+  final Issue issue;
+  final GithubService service;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      child: ListTile(
+        title: Text('${issue.title} #${issue.number}'),
+        subtitle: Text(
+          '${issue.userName} opened this ${formatDate(issue.createdAt)} ago',
+        ),
+        trailing: const Icon(Icons.arrow_forward),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (context) => IssuePage(issue: issue, service: service),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ErrorMessage extends StatelessWidget {
+  const _ErrorMessage({required this.message, required this.onRetry});
+
+  final String message;
+  final Future<void> Function() onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ListTile(
-          title: Text('${issue.title} #${issue.number}'),
-          subtitle: Text(
-              '${issue.userName}'),
-          trailing: Icon(Icons.arrow_forward),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => IssuePage(issue),
-              ),
-            );
-          },
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(message, textAlign: TextAlign.center),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: onRetry,
+              child: const Text('Try again'),
+            ),
+          ],
         ),
       ),
     );

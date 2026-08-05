@@ -10,7 +10,7 @@ class MyMainPage extends StatefulWidget {
 }
 
 class _MyMainPageSate extends State<MyMainPage> {
-  var urls = new List<Data>();
+  var urls = <Data>[];
 
   inputPage(BuildContext context, Widget page) async {  
     final dataFromInputPage = await Navigator.push(
