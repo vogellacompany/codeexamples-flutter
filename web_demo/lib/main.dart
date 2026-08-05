@@ -51,7 +51,7 @@ class _SignUpFormState extends State<SignUpForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           LinearProgressIndicator(value: _formProgress),
-          Text('Sign up', style: Theme.of(context).textTheme.headline4),
+          Text('Sign up', style: Theme.of(context).textTheme.headlineMedium),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
@@ -128,7 +128,7 @@ class WelcomeScreen extends StatelessWidget {
       body: Center(
         child: Text(
           'Welcome!',
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
     );

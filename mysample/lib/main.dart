@@ -50,18 +50,13 @@ class Rects extends StatelessWidget {
   final void Function(int) onSelected;
   final int selectedIndex;
 
-  const Rects({
-    Key key,
-    @required this.rects,
-    @required this.onSelected,
-    this.selectedIndex = -1,
-  }) : super(key: key);
+  const Rects({super.key, required this.rects, required this.onSelected, this.selectedIndex = -1});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (details) {
-        RenderBox box = context.findRenderObject();
+        final box = context.findRenderObject() as RenderBox;
         final offset = box.globalToLocal(details.globalPosition);
         final index = rects.lastIndexWhere((rect) => rect.contains(offset));
         if (index != -1) {

@@ -7,7 +7,7 @@ class MinuteHandPainter extends CustomPainter {
   int minutes;
   int seconds;
 
-  MinuteHandPainter({this.minutes, this.seconds})
+  MinuteHandPainter({required this.minutes, required this.seconds})
       : minuteHandPaint = new Paint() {
     minuteHandPaint.color = const Color(0xFF333333);
     minuteHandPaint.style = PaintingStyle.fill;

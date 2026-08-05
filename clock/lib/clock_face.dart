@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:clock/clock_dial_painter.dart';
-import 'package:clock/clock_hands.dart';
+import 'package:clock_example/clock_dial_painter.dart';
+import 'package:clock_example/clock_hands.dart';
 import 'package:flutter/material.dart';
 
 class ClockFace extends StatefulWidget {
@@ -26,9 +26,9 @@ class _ClockFaceState extends State<ClockFace> {
           ),
           child: GestureDetector(
             onTap: () {
-              Scaffold.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
               var snackebar = createSnackBar(dateTime);
-              Scaffold.of(context).showSnackBar(snackebar);
+              ScaffoldMessenger.of(context).showSnackBar(snackebar);
             },
             onDoubleTap: () {
               setState(() {

@@ -8,7 +8,7 @@ class SecondHandPainter extends CustomPainter {
 
   int seconds;
 
-  SecondHandPainter({this.seconds})
+  SecondHandPainter({required this.seconds})
       : secondHandPaint = new Paint(),
         secondHandPointsPaint = new Paint() {
     secondHandPaint.color = Colors.red;
