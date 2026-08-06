@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Column(
                   children: _labels
-                      .map((element) => RaisedButton(
+                      .map((element) => ElevatedButton(
                             child: Text(element),
                             onPressed: () {
                               _ackAlert(context);
@@ -51,7 +51,7 @@ Future<void> _ackAlert(BuildContext context) {
         title: Text('Not in stock'),
         content: const Text('This item is no longer available'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('Ok'),
             onPressed: () {
               Navigator.of(context).pop();

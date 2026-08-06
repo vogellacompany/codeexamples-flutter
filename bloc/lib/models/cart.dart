@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:reactive_exploration/common/models/cart_item.dart';
-import 'package:reactive_exploration/common/models/product.dart';
+import 'cart_item.dart';
+import 'product.dart';
 
 class Cart {
   final List<CartItem> _items = <CartItem>[];

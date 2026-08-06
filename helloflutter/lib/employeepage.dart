@@ -28,7 +28,7 @@ class EmployeeWidget extends StatelessWidget {
   final String name;
   final String url;
 
-  EmployeeWidget({this.name, this.url});
+  EmployeeWidget({required this.name, required this.url});
 
   @override
   Widget build(BuildContext context) {

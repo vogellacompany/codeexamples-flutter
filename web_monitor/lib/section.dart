@@ -9,7 +9,7 @@ import 'data.dart';
 class Section extends StatefulWidget{
   final Data input;
 
-  const Section ({ Key key, this.input }): super(key: key);
+  const Section({super.key, required this.input});
 
   @override
   _SectionState createState() => new _SectionState();
@@ -48,7 +48,7 @@ _press(String url){
 }
 
 Future fetchStatus(String url) async {
-  final response = await http.get(url);
+  final response = await http.get(Uri.parse(url));
   if(response.statusCode ==  200){
     _online();
   }

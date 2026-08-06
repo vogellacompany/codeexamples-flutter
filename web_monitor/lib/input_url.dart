@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Data.dart';
+import 'data.dart';
 
 //textfield with input management
 class UrlForm extends StatefulWidget {
@@ -52,7 +52,7 @@ class _UrlFormState extends State<UrlForm> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -113,12 +113,12 @@ class _UrlFormState extends State<UrlForm> {
                 ],
               ),),
             actions: <Widget>[
-              new FlatButton(
+              new TextButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              new FlatButton(
+              new TextButton(
                   child: const Text('OK'),
                   onPressed: () {
                     Navigator.pop(context); // this need to be put first, cannot have two alert at the same time

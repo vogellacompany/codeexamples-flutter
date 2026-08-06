@@ -1,19 +1,28 @@
-import 'package:flame/components/animation_component.dart';
-import 'package:galaxygame/dragon.dart';
-import 'package:galaxygame/main.dart';
+import 'package:flame/components.dart';
 
-class Explosion extends AnimationComponent {
-  static const TIME = 0.75;
+import 'constants.dart';
 
-  Explosion(Dragon dragon)
-      : super.sequenced(DRAGON_SIZE, DRAGON_SIZE, 'explosion-4.png', 7,
-            textureWidth: 31.0, textureHeight: 31.0) {
-    this.x = dragon.x;
-    this.y = dragon.y;
-    this.animation.stepTime = TIME / 7;
-  }
+class Explosion extends SpriteAnimationComponent {
+  static const _duration = 0.75;
+  static const _frames = 7;
 
-  bool destroy() {
-    return this.animation.isLastFrame;
+  Explosion({required Vector2 at})
+      : super(
+          size: Vector2.all(dragonSize),
+          position: at,
+          removeOnFinish: true,
+        );
+
+  @override
+  Future<void> onLoad() async {
+    animation = await SpriteAnimation.load(
+      'explosion-4.png',
+      SpriteAnimationData.sequenced(
+        amount: _frames,
+        stepTime: _duration / _frames,
+        textureSize: Vector2.all(31),
+        loop: false,
+      ),
+    );
   }
 }

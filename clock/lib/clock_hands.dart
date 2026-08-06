@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:clock/hand_hour.dart';
-import 'package:clock/hand_minute.dart';
-import 'package:clock/hand_second.dart';
+import 'package:clock_example/hand_hour.dart';
+import 'package:clock_example/hand_minute.dart';
+import 'package:clock_example/hand_second.dart';
 import 'package:flutter/material.dart';
 
 class ClockHands extends StatelessWidget {
   final DateTime dateTime;
 
-  ClockHands({this.dateTime});
+  ClockHands({required this.dateTime});
 
   // Timer _timer;
   // DateTime dateTime;

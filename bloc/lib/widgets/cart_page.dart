@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_exploration/common/models/cart.dart';
-import 'package:reactive_exploration/common/models/cart_item.dart';
-import 'package:reactive_exploration/common/utils/is_dark.dart';
+import '../models/cart.dart';
+import '../models/cart_item.dart';
+import '../utils/is_dark.dart';
 
 class CartPage extends StatelessWidget {
   CartPage(this.cart);
@@ -17,7 +17,7 @@ class CartPage extends StatelessWidget {
       ),
       body: cart.items.isEmpty
           ? Center(
-              child: Text('Empty', style: Theme.of(context).textTheme.display1))
+              child: Text('Empty', style: Theme.of(context).textTheme.headlineMedium))
           : ListView(
               children:
                   cart.items.map((item) => ItemTile(item: item)).toList()),
@@ -26,7 +26,7 @@ class CartPage extends StatelessWidget {
 }
 
 class ItemTile extends StatelessWidget {
-  ItemTile({this.item});
+  const ItemTile({super.key, required this.item});
   final CartItem item;
 
   @override

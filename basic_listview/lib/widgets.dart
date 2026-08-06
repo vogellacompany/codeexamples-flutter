@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
   @override
@@ -18,9 +18,12 @@ class MyHomePage extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             Text('Hello'),
-            RaisedButton(onPressed: () {
-              _ackAlert(context);
-            }),
+            ElevatedButton(
+              onPressed: () {
+                _ackAlert(context);
+              },
+              child: const Text('Show dialog'),
+            ),
           ],
         ),
       ),
@@ -38,7 +41,7 @@ class MyHomePage extends StatelessWidget {
           title: Text('Not in stock'),
           content: const Text('This item is no longer available'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -49,4 +52,3 @@ class MyHomePage extends StatelessWidget {
       },
     );
   }
-}

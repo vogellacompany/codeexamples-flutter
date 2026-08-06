@@ -1,54 +1,44 @@
-import 'dart:ui';
+import 'package:flame/components.dart';
 
-import 'package:flame/components/component.dart';
-import 'package:galaxygame/dragon.dart';
-import 'package:galaxygame/explosion.dart';
-import 'package:galaxygame/main.dart';
+import 'constants.dart';
+import 'explosion.dart';
+import 'galaxy.dart';
 
-class Bullet extends SpriteComponent {
-  bool explode = false;
-  double maxY;
-  List<Dragon> dragonList = <Dragon>[];
-  List<Bullet> bulletList = <Bullet>[];
-  Bullet(this.dragonList, this.bulletList)
-      : super.square(BULLET_SIZE, 'gun.png');
+class Bullet extends SpriteComponent with HasGameReference<Galaxy> {
+  Bullet({required Vector2 start})
+      : super(size: Vector2.all(bulletSize), position: start);
 
   @override
-  void update(double t) {
-    y -= gameOver ? 0 : t * BULLETSPEED;
-
-    if (dragonList.isNotEmpty)
-      dragonList.forEach((dragon) {
-        bool remove = this.toRect().contains(dragon.toRect().bottomCenter) ||
-            this.toRect().contains(dragon.toRect().bottomLeft) ||
-            this.toRect().contains(dragon.toRect().bottomRight);
-        if (remove) {
-          points += 1;
-          dragon.explode = true;
-          bullet.explode = true;
-          dragonList.remove(dragon);
-          game.add(new Explosion(dragon));
-        }
-      });
+  Future<void> onLoad() async {
+    sprite = await Sprite.load('gun.png');
   }
 
   @override
-  bool destroy() {
-    if (explode) {
-      return true;
+  void update(double dt) {
+    super.update(dt);
+    if (game.gameOver) {
+      return;
     }
-    if (y == null || maxY == null) {
-      return false;
+
+    position.y -= dt * bulletSpeed;
+
+    if (position.y + bulletSize < 0) {
+      removeFromParent();
+      return;
     }
-    bool destroy = y >= maxY;
 
-    return destroy;
-  }
+    // Copy the list, since a hit removes the dragon from it.
+    final hits =
+        game.dragons.where((dragon) => dragon.toRect().overlaps(toRect())).toList();
+    if (hits.isEmpty) {
+      return;
+    }
 
-  @override
-  void resize(Size size) {
-    this.x = touchPositionDx;
-    this.y = touchPositionDy;
-    this.maxY = size.height;
+    for (final dragon in hits) {
+      game.points += 1;
+      game.add(Explosion(at: dragon.position.clone()));
+      dragon.removeFromParent();
+    }
+    removeFromParent();
   }
 }

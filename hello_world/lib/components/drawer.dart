@@ -16,12 +16,12 @@ class Owner {
   String displayName;
   String link;
   Owner({
-    this.reputation,
-    this.userId,
-    this.userType,
-    this.profileImage,
-    this.displayName,
-    this.link,
+    required this.reputation,
+    required this.userId,
+    required this.userType,
+    required this.profileImage,
+    required this.displayName,
+    required this.link,
   });
 }
 

@@ -18,9 +18,7 @@ class MyHomePage extends StatelessWidget {
 }
 
 class MyContent extends StatelessWidget {
-  const MyContent({
-    Key key,
-  }) : super(key: key);
+  const MyContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +26,10 @@ class MyContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               var snackebar = createSnackBar();
-              Scaffold.of(context).showSnackBar(snackebar);
+              ScaffoldMessenger.of(context).showSnackBar(snackebar);
             },
             child: Text('Show'),
           )

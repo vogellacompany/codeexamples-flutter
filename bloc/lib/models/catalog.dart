@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'dart:math';
 import 'dart:ui' show Color;
 
-import 'package:reactive_exploration/common/models/product.dart';
+import 'product.dart';
 
 /// Hard-coded catalog of [Product]s.
 final Catalog catalog = fetchCatalogSync();

@@ -1,45 +1,39 @@
-import 'dart:ui';
+import 'package:flame/components.dart';
 
-import 'package:flame/components/component.dart';
-import 'package:galaxygame/main.dart';
+import 'constants.dart';
+import 'galaxy.dart';
 
-class Dragon extends SpriteComponent {
-  Size dimenstions;
-  int postion;
-  int ypostion;
-  bool explode = false;
-  double maxY;
+class Dragon extends SpriteComponent with HasGameReference<Galaxy> {
+  Dragon({required this.column, required this.row})
+      : super(size: Vector2.all(dragonSize));
 
-  Dragon(this.dimenstions, this.postion, this.ypostion)
-      : super.square(DRAGON_SIZE, 'dragon.png');
+  final int column;
+  final int row;
 
   @override
-  void update(double t) {
-    y += gameOver ? 0 : (t * DRAGONSPEED);
+  Future<void> onLoad() async {
+    sprite = await Sprite.load('dragon.png');
+    position = Vector2(dragonSize * column, dragonSize * row);
   }
 
   @override
-  bool destroy() {
-    if (explode) {
-      return true;
+  void update(double dt) {
+    super.update(dt);
+    if (game.gameOver) {
+      return;
     }
-    if (y == null || maxY == null) {
-      return false;
-    }
-    bool destroy = y >= maxY + DRAGON_SIZE / 2;
-    if (destroy) {
-      gameOver = true;
 
-      print("Game over");
-      return true;
+    position.y += dt * dragonSpeed;
+
+    // A dragon that reaches the bottom of the screen ends the game.
+    if (position.y >= game.size.y) {
+      game.gameOver = true;
     }
-    return destroy;
   }
 
   @override
-  void resize(Size size) {
-    this.x = (DRAGON_SIZE * postion);
-    this.y = DRAGON_SIZE * ypostion;
-    this.maxY = size.height;
+  void onRemove() {
+    game.dragons.remove(this);
+    super.onRemove();
   }
 }

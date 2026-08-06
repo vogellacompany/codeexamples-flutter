@@ -1,71 +1,83 @@
 import 'dart:ui';
 
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flame/components.dart';
+import 'package:flame/events.dart';
+import 'package:flame/input.dart';
+import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
-import 'package:galaxygame/bullet.dart';
-import 'package:galaxygame/dragon.dart';
-import 'package:galaxygame/main.dart';
 
-class Galaxy extends BaseGame {
-  bool checkOnce = true;
+import 'bullet.dart';
+import 'constants.dart';
+import 'dragon.dart';
 
-  List<Dragon> dragonList = <Dragon>[];
-  List<Bullet> bulletList = <Bullet>[];
-  Size dimenstions;
+class Galaxy extends FlameGame with TapDetector, HorizontalDragDetector {
+  static const _waveInterval = 4.0;
 
-  Galaxy(this.dimenstions);
+  final List<Dragon> dragons = <Dragon>[];
+
+  bool gameOver = false;
+  int points = 0;
+
+  /// Where the next bullet is fired from.
+  Vector2 aim = Vector2.zero();
+
+  double _waveTimer = _waveInterval;
+
+  final TextPaint _textPaint = TextPaint(
+    style: const TextStyle(color: Colors.white, fontSize: 48.0),
+  );
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (gameOver) {
+      return;
+    }
+
+    _waveTimer += dt;
+    if (_waveTimer >= _waveInterval) {
+      _waveTimer = 0.0;
+      _spawnWave();
+    }
+  }
+
+  void _spawnWave() {
+    for (var column = 1; column <= dragonSize ~/ 7; column++) {
+      for (var row = 0; row < column; row++) {
+        final dragon = Dragon(column: column, row: row);
+        dragons.add(dragon);
+        add(dragon);
+      }
+    }
+  }
 
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-
-    String text = points.toString();
-    TextPainter p = Flame.util
-        .text(text, color: Colors.white, fontSize: 48.0, fontFamily: 'Halo');
-    String over = "Game over";
-    TextPainter overGame = Flame.util
-        .text(over, color: Colors.white, fontSize: 48.0, fontFamily: 'Halo');
-    gameOver
-        ? overGame.paint(canvas, Offset(size.width / 5, size.height / 2))
-        : p.paint(canvas,
-            new Offset(size.width - p.width - 10, size.height - p.height - 10));
-  }
-
-  double creationTimer = 0.0;
-  @override
-  void update(double t) {
-    creationTimer += t;
-    if (creationTimer >= 4) {
-      creationTimer = 0.0;
-
-      for (int i = 1; i <= DRAGON_SIZE / 7; i++) {
-        for (int j = 0; j < i; ++j) {
-          dragon = new Dragon(dimenstions, i, j);
-          dragonList.add(dragon);
-          add(dragon);
-        }
-      }
+    if (gameOver) {
+      _textPaint.render(canvas, 'Game over', Vector2(size.x / 5, size.y / 2));
+    } else {
+      _textPaint.render(
+        canvas,
+        '$points',
+        Vector2(size.x - 10, size.y - 10),
+        anchor: Anchor.bottomRight,
+      );
     }
-    super.update(t);
   }
 
-  void tapInput(Offset position) {
-    touchPositionDx = position.dx;
-    touchPositionDy = position.dy;
-    bulletStartStop = true;
-    bulletList.add(bullet);
-    bullet = new Bullet(dragonList, bulletList);
-    add(bullet);
+  @override
+  void onTapDown(TapDownInfo info) {
+    if (gameOver) {
+      return;
+    }
+    aim = info.eventPosition.widget;
+    add(Bullet(start: aim.clone()));
   }
 
-  void dragInput(Offset position) {
-    touchPositionDx = position.dx;
-    touchPositionDy = position.dy;
-    bulletStartStop = true;
-  }
-
-  void onUp() {
-    bulletStartStop = false;
+  @override
+  void onHorizontalDragUpdate(DragUpdateInfo info) {
+    aim = info.eventPosition.widget;
   }
 }

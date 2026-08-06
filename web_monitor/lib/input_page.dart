@@ -44,7 +44,7 @@ class _InputPageSate extends State<InputPage>{
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('OK'),
                 onPressed: () {
                   Navigator.pop(context, d); 
@@ -101,12 +101,12 @@ class _InputPageSate extends State<InputPage>{
                           labelText: 'Enter the Time Interval', hintText: 'e.g. 10'),
                           controller: myTimeController,
                     ),
-                new FlatButton(
+                new TextButton(
                   child: const Text('CANCEL'),
                   onPressed: () {
                     Navigator.pop(context, d); 
                   }),
-                new FlatButton(
+                new TextButton(
                   child: const Text('OK'),
                   onPressed: () {
                     handleUrl();                    

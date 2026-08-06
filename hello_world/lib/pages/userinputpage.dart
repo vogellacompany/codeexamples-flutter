@@ -33,7 +33,7 @@ class _MyInputValidationState extends State<MyInputValidation> {
             TextFormField(
               decoration: InputDecoration(labelText: "User"),
               validator: (value) {
-                if (value == null && value.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'User cannot be empty';
                 }
                 return null;
@@ -42,16 +42,16 @@ class _MyInputValidationState extends State<MyInputValidation> {
             TextFormField(
               decoration: InputDecoration(labelText: "Password"),
               validator: (value) {
-                if (value.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'User cannot be empty';
                 }
                 return null;
               },
               obscureText: true,
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState!.validate()) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -78,7 +78,7 @@ class UserPhotoSelection extends StatefulWidget {
 }
 
 class _UserPhotoSelection extends State<StatefulWidget> {
-  File _image;
+  File? _image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +88,9 @@ class _UserPhotoSelection extends State<StatefulWidget> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-                child: _image== null? Icon(Icons.add_a_photo): Image.file(_image),
+                child: _image == null
+                    ? const Icon(Icons.add_a_photo)
+                    : Image.file(_image!),
             ),
             ),
           ),
@@ -130,11 +132,11 @@ class _UserPhotoSelection extends State<StatefulWidget> {
   }
 
   Future getImage(ImageSource source) async {
-    var image = await ImagePicker.pickImage(source: source);
+    final image = await ImagePicker().pickImage(source: source);
 
     if (image != null) {
       setState(() {
-        _image = image;
+        _image = File(image.path);
       });
     }
   }
